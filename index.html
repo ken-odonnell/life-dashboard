@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Temporal Dashboard Pro v8</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700&family=Inter:wght@300;400;500;600&display=swap');
+
+        :root {
+            --bg-dark: #0f1115;
+            --card-bg: #161920;
+            --border-color: #2d3748;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-dark);
+            color: #e2e8f0;
+        }
+
+        .mono { font-family: 'JetBrains Mono', monospace; }
+
+        .card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2), 0 2px 4px -1px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Calendar Styles */
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 2px;
+            text-align: center;
+            font-size: 0.7rem;
+        }
+        .calendar-day {
+            padding: 2px;
+            color: #718096;
+        }
+        .calendar-day.today {
+            background-color: #3b82f6;
+            color: white;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+        .calendar-header {
+            color: #4a5568;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        /* Memento Mori */
+        .life-grid {
+            display: grid;
+            grid-template-columns: repeat(36, 1fr);
+            gap: 2px;
+        }
+        .life-dot {
+            width: 100%;
+            height: 5px;
+            border-radius: 1px;
+            background-color: #2d3748;
+        }
+        .life-dot.past { background-color: #10b981; }
+        .life-dot.active { background-color: #fff; box-shadow: 0 0 4px #fff; }
+        
+        /* Daily Grind */
+        .grind-grid {
+            display: grid;
+            grid-template-columns: repeat(13, 1fr);
+            gap: 4px;
+            margin-top: 10px;
+        }
+        .grind-dot {
+            height: 28px;
+            border-radius: 3px;
+            background-color: #2d3748;
+            width: 100%;
+        }
+        .grind-dot.past { background-color: #3b82f6; }
+        .grind-dot.active { background-color: #fff; box-shadow: 0 0 6px #3b82f6; }
+        
+        /* Forecast Scrollbar */
+        .forecast-scroll::-webkit-scrollbar { height: 4px; }
+        .forecast-scroll::-webkit-scrollbar-track { background: #1f2937; }
+        .forecast-scroll::-webkit-scrollbar-thumb { background: #4b5563; border-radius: 2px; }
+
+        /* Map Inversion for Dark Mode */
+        .map-invert {
+            filter: invert(1) opacity(0.5); /* Increased opacity for visibility */
+        }
+    </style>
+</head>
+<body class="min-h-screen p-4 md:p-6 lg:p-8 flex flex-col items-center">
+
+    <div class="max-w-7xl w-full grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+        <!-- 1. Calendar (Full Width Top) -->
+        <div class="card p-4 lg:col-span-12">
+            <div id="calendar-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Months injected via JS -->
+            </div>
+        </div>
+
+        <!-- 2. Master Clock (Spans 8 cols) -->
+        <div class="card p-6 lg:col-span-8 relative overflow-hidden">
+            <div class="absolute top-0 left-0 w-1 h-full bg-blue-500"></div>
+            <div class="flex flex-col md:flex-row justify-between items-center h-full gap-6">
+                <div class="z-10 text-center md:text-left">
+                    <h2 class="text-blue-400 text-xs uppercase tracking-[0.2em] font-bold mb-2">Los Angeles / PST</h2>
+                    <div id="master-clock" class="text-6xl md:text-8xl font-bold tracking-tighter mono text-white leading-none">
+                        00:00:00
+                    </div>
+                    <div id="master-date" class="text-gray-400 mt-3 text-xl font-light">Loading date...</div>
+                </div>
+                <div class="relative w-32 h-32 md:w-40 md:h-40 flex-shrink-0">
+                    <canvas id="analogClock" width="200" height="200" class="w-full h-full"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. Existential Age (Spans 4 cols) -->
+        <div class="card p-6 lg:col-span-4 justify-center">
+            <h3 class="text-gray-500 text-xs uppercase tracking-widest mb-4 flex items-center gap-2">
+                <i data-lucide="hourglass" class="w-4 h-4 text-orange-500"></i> Existential Age
+            </h3>
+            <div class="text-center py-4">
+                <div id="decimal-age" class="text-5xl lg:text-5xl font-bold text-orange-500 mono tracking-tight">30.00000000</div>
+                <p class="text-xs text-gray-500 mt-2">Years since Apr 30, 1995</p>
+            </div>
+        </div>
+
+        <!-- 4. Daily Grind (Spans 4 cols) -->
+        <div class="card p-6 lg:col-span-4">
+            <h3 class="text-gray-500 text-xs uppercase tracking-widest mb-2 flex items-center gap-2">
+                <i data-lucide="briefcase" class="w-4 h-4 text-blue-500"></i> Daily Grind (07:00 - 20:00)
+            </h3>
+            <div class="flex justify-between items-baseline mb-2">
+                <span id="work-percentage" class="text-xl font-bold text-white">0%</span>
+                <span id="work-status" class="text-[10px] text-blue-300 bg-blue-500/10 px-2 py-1 rounded uppercase">Loading</span>
+            </div>
+            
+            <div class="flex flex-col gap-1">
+                <div id="grind-grid-container" class="grind-grid"></div>
+                <div class="flex justify-between text-[9px] text-gray-600 font-mono mt-1">
+                    <span>07:00</span>
+                    <span class="text-center">1 block = 15m</span>
+                    <span>20:00</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 5. Memento Mori (Spans 8 cols) -->
+        <div class="card p-6 lg:col-span-8">
+            <div class="flex justify-between items-center mb-2">
+                <h3 class="text-gray-500 text-xs uppercase tracking-widest flex items-center gap-2">
+                    <i data-lucide="grid-3x3" class="w-4 h-4 text-purple-500"></i> Memento Mori (90y)
+                </h3>
+                <div class="flex items-center gap-3 text-[10px] text-gray-500">
+                    <div class="flex items-center gap-1"><div class="w-2 h-2 rounded-[1px] bg-emerald-500"></div> Past</div>
+                    <div class="flex items-center gap-1"><div class="w-2 h-2 rounded-[1px] bg-gray-700"></div> Future</div>
+                </div>
+            </div>
+            
+            <div class="w-full">
+                <div id="life-grid-container" class="life-grid w-full"></div>
+            </div>
+            <div class="text-[9px] text-gray-600 font-mono mt-2 text-right">
+                Row = 3 Years (36 Months)
+            </div>
+        </div>
+
+        <!-- 6. Advanced Weather (Spans 6 cols) -->
+        <div class="card p-6 lg:col-span-6">
+            <div class="flex justify-between items-start mb-4">
+                <div>
+                    <h3 class="text-gray-500 text-xs uppercase tracking-widest flex items-center gap-2 mb-1">
+                        <i data-lucide="cloud-sun" class="w-4 h-4 text-yellow-500"></i> Los Angeles, CA
+                    </h3>
+                    <div class="flex items-baseline gap-2">
+                        <span id="current-temp" class="text-4xl font-bold text-white">--°</span>
+                        <span id="current-desc" class="text-sm text-gray-400 capitalize">Loading</span>
+                    </div>
+                    <div class="text-xs text-gray-500 mt-1">Feels like <span id="feels-like" class="text-gray-300">--°</span></div>
+                </div>
+            </div>
+
+            <!-- Chart with Axis Labels -->
+            <div class="w-full h-40 mb-6">
+                <canvas id="weatherChart"></canvas>
+            </div>
+
+            <!-- Metrics Grid -->
+            <div class="grid grid-cols-3 gap-2 text-center mb-4">
+                <div class="bg-gray-800/40 rounded p-1.5">
+                    <div class="text-[9px] text-gray-500 uppercase">Sunrise</div>
+                    <div id="sunrise" class="font-bold text-white text-sm text-yellow-200">--:--</div>
+                </div>
+                <div class="bg-gray-800/40 rounded p-1.5">
+                    <div class="text-[9px] text-gray-500 uppercase">Sunset</div>
+                    <div id="sunset" class="font-bold text-white text-sm text-orange-300">--:--</div>
+                </div>
+                <div class="bg-gray-800/40 rounded p-1.5">
+                    <div class="text-[9px] text-gray-500 uppercase">UV Index</div>
+                    <div id="uv-index" class="font-bold text-white text-sm">--</div>
+                </div>
+                <div class="bg-gray-800/40 rounded p-1.5">
+                    <div class="text-[9px] text-gray-500 uppercase">Wind</div>
+                    <div id="wind-speed" class="font-bold text-white text-sm">--</div>
+                </div>
+                <div class="bg-gray-800/40 rounded p-1.5">
+                    <div class="text-[9px] text-gray-500 uppercase">AQI</div>
+                    <div id="aqi" class="font-bold text-white text-sm">--</div>
+                </div>
+                <div class="bg-gray-800/40 rounded p-1.5">
+                    <div class="text-[9px] text-gray-500 uppercase">Vis</div>
+                    <div id="visibility" class="font-bold text-white text-sm">--</div>
+                </div>
+            </div>
+
+            <div class="border-t border-gray-800 pt-3">
+                <div id="forecast-list" class="flex gap-4 overflow-x-auto forecast-scroll pb-2">
+                    <!-- JS Injected -->
+                </div>
+            </div>
+        </div>
+
+        <!-- 7. Global Operations / World Clocks (Spans 6 cols) -->
+        <div class="card p-6 lg:col-span-6 flex flex-col">
+            <h3 class="text-gray-500 text-xs uppercase tracking-widest mb-4 flex items-center gap-2">
+                <i data-lucide="clock" class="w-4 h-4 text-blue-400"></i> Global Operations
+            </h3>
+            
+            <!-- Map Container (Above Clocks) -->
+            <div class="w-full mb-6 flex justify-center items-center">
+                 <img src="https://raw.githubusercontent.com/ken-odonnell/dashboard-assets/main/DottedWorldMap.svg" class="w-full max-h-48 object-contain map-invert" alt="World Map">
+            </div>
+            
+            <!-- Grid of Clocks -->
+            <div id="world-clocks-container" class="grid grid-cols-2 md:grid-cols-3 gap-y-6 gap-x-4">
+                <!-- JS Injected -->
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        lucide.createIcons();
+
+        // --- Config ---
+        const BIRTH_DATE = new Date('1995-04-30T00:00:00');
+        const LIFE_EXPECTANCY_YEARS = 90;
+        const LOCATIONS = [
+            { name: "New York", zone: "America/New_York", id: "ny" },
+            { name: "London", zone: "Europe/London", id: "london" },
+            { name: "Berlin", zone: "Europe/Berlin", id: "berlin" },
+            { name: "Tel Aviv", zone: "Asia/Jerusalem", id: "telaviv" },
+            { name: "Dubai", zone: "Asia/Dubai", id: "dubai" },
+            { name: "Manila", zone: "Asia/Manila", id: "manila" },
+        ];
+
+        // --- 1. Calendar ---
+        function initCalendar() {
+            const container = document.getElementById('calendar-container');
+            const now = new Date();
+            const currentMonth = now.getMonth();
+            const currentYear = now.getFullYear();
+            
+            let html = '';
+            for(let i = 0; i < 4; i++) {
+                let m = currentMonth + i;
+                let y = currentYear;
+                if(m > 11) { m -= 12; y++; }
+                
+                const firstDay = new Date(y, m, 1).getDay();
+                const daysInMonth = new Date(y, m+1, 0).getDate();
+                const monthName = new Date(y, m, 1).toLocaleString('default', { month: 'long' });
+                
+                let monthHtml = `
+                    <div class="flex flex-col">
+                        <div class="calendar-header flex justify-between items-end border-b border-gray-800 pb-1 mb-1">
+                            <span class="text-xs uppercase tracking-wider text-gray-500">${monthName}</span>
+                            <span class="text-[10px] text-gray-600">${y}</span>
+                        </div>
+                        <div class="calendar-grid">
+                            <div class="text-[9px] text-gray-600">S</div>
+                            <div class="text-[9px] text-gray-600">M</div>
+                            <div class="text-[9px] text-gray-600">T</div>
+                            <div class="text-[9px] text-gray-600">W</div>
+                            <div class="text-[9px] text-gray-600">T</div>
+                            <div class="text-[9px] text-gray-600">F</div>
+                            <div class="text-[9px] text-gray-600">S</div>
+                `;
+                
+                for(let j=0; j<firstDay; j++) {
+                    monthHtml += `<div></div>`;
+                }
+                
+                for(let d=1; d<=daysInMonth; d++) {
+                    let isToday = (d === now.getDate() && m === currentMonth && y === currentYear);
+                    monthHtml += `<div class="calendar-day ${isToday ? 'today' : ''}">${d}</div>`;
+                }
+                
+                monthHtml += `</div></div>`;
+                html += monthHtml;
+            }
+            container.innerHTML = html;
+        }
+
+        // --- 2. Master & World Clocks ---
+        function drawClockOnCanvas(canvasId, timeDate, color = "#3b82f6") {
+            const canvas = document.getElementById(canvasId);
+            if(!canvas) return;
+            const ctx = canvas.getContext("2d");
+            const radius = canvas.height / 2;
+            
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.save();
+            ctx.translate(radius, radius);
+            const r = radius * 0.90;
+
+            ctx.beginPath();
+            ctx.arc(0, 0, r, 0, 2 * Math.PI);
+            ctx.strokeStyle = color;
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            // Background fill for better visibility against map
+            ctx.beginPath();
+            ctx.arc(0, 0, r, 0, 2 * Math.PI);
+            ctx.fillStyle = "rgba(22, 25, 32, 0.8)";
+            ctx.fill();
+
+            const hour = timeDate.getHours();
+            const minute = timeDate.getMinutes();
+            const second = timeDate.getSeconds();
+
+            // Hour
+            const hourPos = (hour % 12)*Math.PI/6 + (minute*Math.PI/(6*60));
+            ctx.beginPath();
+            ctx.lineWidth = 3;
+            ctx.lineCap = "round";
+            ctx.strokeStyle = "#e2e8f0";
+            ctx.moveTo(0,0);
+            ctx.rotate(hourPos - Math.PI/2);
+            ctx.lineTo(r*0.5, 0);
+            ctx.stroke();
+            ctx.rotate(-(hourPos - Math.PI/2));
+            
+            // Minute
+            const minutePos = (minute*Math.PI/30);
+            ctx.beginPath();
+            ctx.lineWidth = 2;
+            ctx.strokeStyle = "#94a3b8";
+            ctx.moveTo(0,0);
+            ctx.rotate(minutePos - Math.PI/2);
+            ctx.lineTo(r*0.75, 0);
+            ctx.stroke();
+            ctx.rotate(-(minutePos - Math.PI/2));
+
+            // Second
+            const secondPos = (second*Math.PI/30);
+            ctx.beginPath();
+            ctx.lineWidth = 1;
+            ctx.strokeStyle = "#ef4444";
+            ctx.moveTo(0,0);
+            ctx.rotate(secondPos - Math.PI/2);
+            ctx.lineTo(r*0.85, 0);
+            ctx.stroke();
+            ctx.rotate(-(secondPos - Math.PI/2));
+
+            ctx.restore();
+        }
+
+        function initWorldClocks() {
+            const container = document.getElementById('world-clocks-container');
+            let html = '';
+            LOCATIONS.forEach(loc => {
+                html += `
+                    <div class="flex flex-col items-center p-2 rounded bg-gray-900/40 backdrop-blur-sm border border-gray-800">
+                        <div class="relative w-16 h-16 mb-2">
+                            <canvas id="canvas-${loc.id}" width="100" height="100" class="w-full h-full"></canvas>
+                        </div>
+                        <span class="text-[10px] text-gray-400 uppercase tracking-widest mb-1">${loc.name}</span>
+                        <span id="digital-${loc.id}" class="font-mono text-xs text-white font-bold">--:--</span>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+        }
+
+        // --- 3. Life Grid ---
+        function initLifeGrid() {
+            const container = document.getElementById('life-grid-container');
+            const totalMonths = LIFE_EXPECTANCY_YEARS * 12;
+            const now = new Date();
+            const ageInMilliseconds = now - BIRTH_DATE;
+            const ageInMonths = ageInMilliseconds / (1000 * 60 * 60 * 24 * 30.44);
+
+            let html = '';
+            for(let i = 0; i < totalMonths; i++) {
+                let className = 'life-dot';
+                if (i < Math.floor(ageInMonths)) {
+                    className += ' past';
+                } else if (i === Math.floor(ageInMonths)) {
+                    className += ' active';
+                } else {
+                    className += ' bg-gray-800';
+                }
+                html += `<div class="${className}" title="Month ${i+1}"></div>`;
+            }
+            container.innerHTML = html;
+        }
+
+        // --- 4. Daily Grind ---
+        function updateDailyGrind() {
+            const now = new Date();
+            const start = new Date(now); start.setHours(7,0,0,0);
+            const end = new Date(now); end.setHours(20,0,0,0);
+            const totalDots = 52;
+            let dotsPassed = 0;
+            
+            if(now > end) {
+                dotsPassed = totalDots;
+                document.getElementById('work-status').innerText = "DONE";
+                document.getElementById('work-status').className = "text-[10px] text-green-300 bg-green-500/10 px-2 py-1 rounded uppercase";
+                document.getElementById('work-percentage').innerText = "100%";
+            } else if(now < start) {
+                dotsPassed = 0;
+                document.getElementById('work-status').innerText = "PRE-WORK";
+                document.getElementById('work-percentage').innerText = "0%";
+            } else {
+                const totalMs = end - start;
+                const elapsedMs = now - start;
+                const pct = elapsedMs / totalMs;
+                dotsPassed = Math.floor(pct * totalDots);
+                document.getElementById('work-status').innerText = "WORKING";
+                document.getElementById('work-percentage').innerText = (pct*100).toFixed(1) + "%";
+            }
+
+            const container = document.getElementById('grind-grid-container');
+            let html = '';
+            for(let i=0; i<totalDots; i++) {
+                let className = 'grind-dot';
+                if(i < dotsPassed) className += ' past';
+                else if(i === dotsPassed) className += ' active';
+                else className += ' bg-gray-700';
+                html += `<div class="${className}"></div>`;
+            }
+            container.innerHTML = html;
+        }
+
+        // --- 5. Weather ---
+        let weatherChartInst = null;
+        const weatherCodes = {
+            0: {d:'Clear', i:'sun'}, 1: {d:'Mainly Clear', i:'sun'}, 2: {d:'Partly Cloudy', i:'cloud-sun'}, 
+            3: {d:'Overcast', i:'cloud'}, 45: {d:'Fog', i:'cloud-fog'}, 48: {d:'Fog', i:'cloud-fog'}, 
+            51: {d:'Drizzle', i:'cloud-drizzle'}, 53: {d:'Drizzle', i:'cloud-drizzle'}, 55: {d:'Drizzle', i:'cloud-drizzle'},
+            61: {d:'Rain', i:'cloud-rain'}, 63: {d:'Rain', i:'cloud-rain'}, 65: {d:'Rain', i:'cloud-rain'}, 
+            80: {d:'Showers', i:'cloud-rain'}, 95: {d:'Thunderstorm', i:'cloud-lightning'}
+        };
+        function getWeatherInfo(code) { return weatherCodes[code] || {d:'Unknown', i:'cloud'}; }
+
+        async function fetchWeather() {
+            try {
+                const [weatherRes, airRes] = await Promise.all([
+                    fetch('https://api.open-meteo.com/v1/forecast?latitude=34.05&longitude=-118.24&current=temperature_2m,relative_humidity_2m,apparent_temperature,weather_code,wind_speed_10m&hourly=temperature_2m&daily=weather_code,temperature_2m_max,temperature_2m_min,uv_index_max,sunrise,sunset&temperature_unit=fahrenheit&wind_speed_unit=mph&timezone=America%2FLos_Angeles'),
+                    fetch('https://air-quality-api.open-meteo.com/v1/air-quality?latitude=34.05&longitude=-118.24&current=us_aqi')
+                ]);
+
+                const data = await weatherRes.json();
+                const airData = await airRes.json();
+                const currentInfo = getWeatherInfo(data.current.weather_code);
+
+                document.getElementById('current-temp').innerText = Math.round(data.current.temperature_2m) + "°";
+                document.getElementById('feels-like').innerText = Math.round(data.current.apparent_temperature) + "°";
+                document.getElementById('current-desc').innerText = currentInfo.d;
+                document.getElementById('wind-speed').innerText = Math.round(data.current.wind_speed_10m) + ' mph';
+                document.getElementById('uv-index').innerText = data.daily.uv_index_max[0];
+                document.getElementById('aqi').innerText = airData.current.us_aqi;
+                document.getElementById('visibility').innerText = "10+ mi"; 
+                
+                const sunrise = new Date(data.daily.sunrise[0]).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit', hour12: false});
+                const sunset = new Date(data.daily.sunset[0]).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit', hour12: false});
+                document.getElementById('sunrise').innerText = sunrise;
+                document.getElementById('sunset').innerText = sunset;
+
+                updateChart(data.hourly);
+                updateForecastList(data.daily);
+
+            } catch (e) {
+                console.error("Weather Error", e);
+            }
+        }
+
+        function updateChart(hourly) {
+            const ctx = document.getElementById('weatherChart').getContext('2d');
+            
+            // 1. Filter for CURRENT DAY only (00:00 - 23:00)
+            const now = new Date();
+            const todayStr = now.toISOString().split('T')[0]; // "YYYY-MM-DD"
+            
+            let labels = [];
+            let temps = [];
+            
+            for(let i=0; i<hourly.time.length; i++) {
+                if(hourly.time[i].startsWith(todayStr)) {
+                    // It's today
+                    const t = new Date(hourly.time[i]);
+                    labels.push(t.toLocaleTimeString([], {hour: 'numeric'})); // 1 AM, 2 AM
+                    temps.push(hourly.temperature_2m[i]);
+                }
+            }
+
+            if (weatherChartInst) weatherChartInst.destroy();
+            
+            const gradient = ctx.createLinearGradient(0, 0, 0, 150);
+            gradient.addColorStop(0, 'rgba(250, 204, 21, 0.4)');
+            gradient.addColorStop(1, 'rgba(250, 204, 21, 0)');
+
+            weatherChartInst = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Temperature',
+                        data: temps,
+                        borderColor: '#facc15',
+                        backgroundColor: gradient,
+                        borderWidth: 2,
+                        pointRadius: 0,
+                        pointHoverRadius: 4,
+                        fill: true,
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        x: { 
+                            display: true,
+                            title: { display: true, text: 'Time', color: '#6b7280', font: {size: 10} },
+                            ticks: { color: '#6b7280', maxTicksLimit: 8, font: {size: 10} },
+                            grid: { display: false }
+                        },
+                        y: { 
+                            display: true,
+                            title: { display: true, text: 'Temp (°F)', color: '#6b7280', font: {size: 10} },
+                            ticks: { color: '#6b7280', font: {size: 10} },
+                            grid: { color: '#374151' } // subtle grid
+                        }
+                    }
+                }
+            });
+        }
+
+        function updateForecastList(daily) {
+            const container = document.getElementById('forecast-list');
+            const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+            let html = '';
+            for(let i=0; i<7; i++) {
+                const dateParts = daily.time[i].split('-');
+                const d = new Date(dateParts[0], dateParts[1]-1, dateParts[2]);
+                const dayName = i===0 ? 'Today' : days[d.getDay()];
+                const info = getWeatherInfo(daily.weather_code[i]);
+                const max = Math.round(daily.temperature_2m_max[i]);
+                const min = Math.round(daily.temperature_2m_min[i]);
+                html += `
+                    <div class="flex flex-col items-center min-w-[3rem]">
+                        <span class="text-[9px] text-gray-500 uppercase mb-1">${dayName}</span>
+                        <i data-lucide="${info.i}" class="w-5 h-5 text-gray-300 mb-1"></i>
+                        <span class="text-xs font-bold text-white">${max}°</span>
+                        <span class="text-[9px] text-gray-500">${min}°</span>
+                    </div>
+                `;
+            }
+            container.innerHTML = html;
+            lucide.createIcons();
+        }
+
+        // --- Loop ---
+        function tick() {
+            const now = new Date();
+            
+            // Age
+            const ageYear = (now - BIRTH_DATE) / (1000 * 60 * 60 * 24 * 365.25);
+            document.getElementById('decimal-age').innerText = ageYear.toFixed(8);
+
+            // Master Clock (LA)
+            const laTimeStr = now.toLocaleString("en-US", { timeZone: 'America/Los_Angeles' });
+            const laDateStr = now.toLocaleDateString("en-US", { timeZone: 'America/Los_Angeles', weekday: 'long', month: 'long', day: 'numeric' });
+            const laTime = new Date(laTimeStr);
+            
+            document.getElementById('master-clock').innerText = laTime.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+            document.getElementById('master-date').innerText = laDateStr;
+            drawClockOnCanvas('analogClock', laTime, "#3b82f6");
+
+            // World Clocks
+            LOCATIONS.forEach(loc => {
+                const cityTimeStr = now.toLocaleString("en-US", { timeZone: loc.zone });
+                const cityTime = new Date(cityTimeStr);
+                
+                const el = document.getElementById(`digital-${loc.id}`);
+                if(el) el.innerText = cityTime.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
+                
+                drawClockOnCanvas(`canvas-${loc.id}`, cityTime, "#718096");
+            });
+            
+            updateDailyGrind();
+        }
+
+        // Init
+        initCalendar();
+        initLifeGrid();
+        initWorldClocks();
+        tick();
+        fetchWeather();
+        setInterval(tick, 50); 
+        setInterval(fetchWeather, 60000 * 10);
+
+    </script>
+</body>
+</html>
