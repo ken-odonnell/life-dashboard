@@ -1,0 +1,722 @@
+{
+  "words": [
+    {
+      "word": "Sonder",
+      "definition": "The realization that each random passerby has a life as vivid and complex as your own."
+    },
+    {
+      "word": "Ephemeral",
+      "definition": "Lasting for a very short time; fleeting."
+    },
+    {
+      "word": "Accentuate",
+      "definition": "Make more noticeable or prominent."
+    },
+    {
+      "word": "Accrued",
+      "definition": "Received or accumulated in regular or increasing amounts over time."
+    },
+    {
+      "word": "Adroit",
+      "definition": "Clever or skillful in using the hands or mind."
+    },
+    {
+      "word": "Ancillary",
+      "definition": "Providing necessary support to the primary activities or operation of an organization, institution, industry, or system."
+    },
+    {
+      "word": "Archaic",
+      "definition": "Very old or old-fashioned."
+    },
+    {
+      "word": "Ardor",
+      "definition": "Enthusiasm or passion."
+    },
+    {
+      "word": "Arduous",
+      "definition": "Involving or requiring strenuous effort; difficult and tiring."
+    },
+    {
+      "word": "Asceticism",
+      "definition": "Severe self-discipline and avoidance of all forms of indulgence, typically for religious reasons."
+    },
+    {
+      "word": "Assailing",
+      "definition": "Make a concerted or violent attack on."
+    },
+      {
+      "word": "Assented",
+      "definition": "Express approval or agreement, typically officially."
+    },
+    {
+      "word": "Austere",
+      "definition": "Severe or strict in manner, attitude, or appearance."
+    },
+    {
+      "word": "Austerity",
+      "definition": "Extreme plainness and simplicity of style or appearance."
+    },
+    {
+      "word": "Aversion",
+      "definition": "A strong dislike or disinclination."
+    },
+    {
+      "word": "Bathos",
+      "definition": "An effect of anticlimax created by an unintentional lapse in mood from the sublime to the trivial or ridiculous."
+    },
+    {
+      "word": "Bleak",
+      "definition": "Charmless and inhospitable; dreary"
+    },
+    {
+      "word": "Bluster",
+      "definition": "Loud, aggressive, or indignant talk with little effect."
+    },
+    {
+      "word": "Capitulate",
+      "definition": "Cease to resist an opponent or an unwelcome demand; surrender."
+    },
+    {
+      "word": "Clandestine",
+      "definition": "Kept secret or done secretively, especially because illicit."
+    },
+    {
+      "word": "Conceit",
+      "definition": "A fanciful expression in writing or speech; an elaborate metaphor."
+    },
+    {
+      "word": "Consummation",
+      "definition": "The point at which something is complete or finalized."
+    },
+    {
+      "word": "Contemptuous",
+      "definition": "Showing contempt; scornful."
+    },
+    {
+      "word": "Curtail",
+      "definition": "Reduce in extent or quantity; impose a restriction on."
+    },
+    {
+      "word": "Delineatel",
+      "definition": "Describe or portray (something) precisely."
+    },
+    {
+      "word": "Demurred",
+      "definition": "Raise doubts or objections or show reluctance."
+    },
+    {
+      "word": "Dismay",
+      "definition": "Consternation and distress, typically that caused by something unexpected."
+    },
+    {
+      "word": "Disposition",
+      "definition": "A person's inherent qualities of mind and character."
+    },
+    {
+      "word": "Disseminate",
+      "definition": "Spread (something, especially information) widely."
+    },
+    {
+      "word": "Dubious",
+      "definition": "Hesitating or doubting; suspect"
+    },
+    {
+      "word": "Effused",
+      "definition": "Talk in an unrestrained, excited manner."
+    },
+    {
+      "word": "Effusively",
+      "definition": "In an unrestrained or heartfelt manner."
+    },
+    {
+      "word": "Emphatically",
+      "definition": "Tending to express oneself in forceful speech or to take decisive action"
+    },
+    {
+      "word": "Encompass",
+      "definition": "Surround and have or hold within."
+    },
+    {
+      "word": "Engendered",
+      "definition": "Cause or give rise to (a feeling, situation, or condition)."
+    },
+    {
+      "word": "Enigmatic",
+      "definition": "Difficult to interpret or understand; mysterious."
+    },
+    {
+      "word": "Ensconced",
+      "definition": "Establish or settle (someone) in a comfortable, safe, or secret place."
+    },
+    {
+      "word": "Enthralled",
+      "definition": "Capture the fascinated attention of."
+    },
+    {
+      "word": "Epitomized",
+      "definition": "Be a perfect example of, or give a summary of"
+    },
+    {
+      "word": "Equestrian",
+      "definition": "Relating to horse riding."
+    },
+    {
+      "word": "Equivocal",
+      "definition": "Open to more than one interpretation; ambiguous."
+    },
+    {
+      "word": "Erroneous",
+      "definition": "Wrong; incorrect."
+    },
+    {
+      "word": "Erstwhile",
+      "definition": "Former."
+    },
+    {
+      "word": "Eschewing",
+      "definition": "Deliberately avoid using; abstain from."
+    },
+    {
+      "word": "Esoteric",
+      "definition": "Intended for or likely to be understood by only a small number of people with a specialized knowledge or interest."
+    },
+    {
+      "word": "Evidently",
+      "definition": "plainly or obviously; in a way that is clearly seen or understood."
+    },
+    {
+      "word": "Exalted",
+      "definition": "In a state of extreme happiness."
+    },
+    {
+      "word": "Exacerbate",
+      "definition": "Make (a problem, bad situation, or negative feeling) worse."
+    },
+    {
+      "word": "Exasperate",
+      "definition": "Irritate and frustrate (someone) intensely."
+    },
+    {
+      "word": "Extemporaneous",
+      "definition": "Spoken or done without preparation."
+    },
+    {
+      "word": "Extol",
+      "definition": "Praise enthusiastically."
+    },
+    {
+      "word": "Exuberance",
+      "definition": "The quality of being full of energy, excitement, and cheerfulness; ebullience."
+    },
+    {
+      "word": "Facilitate",
+      "definition": "Make (an action or process) easy or easier."
+    },
+    {
+      "word": "Fastidious",
+      "definition": "Very attentive to and concerned about accuracy and detail."
+    },
+    {
+      "word": "Fervent",
+      "definition": "Having or displaying a passionate intensity."
+    },
+    {
+      "word": "Floundering",
+      "definition": "Struggle mentally; show or feel great confusion."
+    },
+    {
+      "word": "Genteel",
+      "definition": "Polite, refined, or respectable, often in an affected or ostentatious way."
+    },
+    {
+      "word": "Geriatric",
+      "definition": "Relating to old people, especially with regard to their healthcare."
+    },
+    {
+      "word": "Gratuitous",
+      "definition": "Unnecessary and unwarranted"
+    },
+    {
+      "word": "Gregarious",
+      "definition": "(Of a person) fond of company; sociable."
+    },
+    {
+      "word": "Gubernatorial",
+      "definition": "Relating to a state governor or the office of state governor."
+    },
+    {
+      "word": "Highfalutin",
+      "definition": "(Especially of speech, writing, or ideas) pompous or pretentious."
+    },
+    {
+      "word": "Imbued",
+      "definition": "Inspire or permeate with (a feeling or quality)."
+    },
+    {
+      "word": "Impetuous",
+      "definition": "Acting or done quickly and without thought or care."
+    },
+    {
+      "word": "Incalculable",
+      "definition": "Too great to be calculated or estimated."
+    },
+    {
+      "word": "Incisive",
+      "definition": "(Of a person or mental process) intelligently analytical and clear-thinking."
+    },
+    {
+      "word": "Interloper",
+      "definition": "A person who becomes involved in a place or situation where they are not wanted or are considered not to belong."
+    },
+    {
+      "word": "Invariably",
+      "definition": "In every case or on every occasion; always."
+    },
+    {
+      "word": "Litany",
+      "definition": "A tedious recital or repetitive series."
+    },
+    {
+      "word": "Lugubrious",
+      "definition": "Looking or sounding sad and dismal."
+    },
+    {
+      "word": "Magnanimous",
+      "definition": "Generous or forgiving, especially toward a rival or less powerful person."
+    },
+    {
+      "word": "Mercurial",
+      "definition": "(Of a person) subject to sudden or unpredictable changes of mood or mind."
+    },
+    {
+      "word": "Meritocracy",
+      "definition": "Government or the holding of power by people selected on the basis of their ability."
+    },
+    {
+      "word": "Mirth",
+      "definition": "Amusement, especially as expressed in laughter."
+    },
+    {
+      "word": "Mollified",
+      "definition": "Appease the anger or anxiety of (someone)."
+    },
+    {
+      "word": "Nuanced",
+      "definition": "Characterized by subtle shades of meaning or expression."
+    },
+    {
+      "word": "Obscure",
+      "definition": "Not discovered or known about; uncertain."
+    },
+    {
+      "word": "Obsequious",
+      "definition": "Obedient or attentive to an excessive or servile degree."
+    },
+    {
+      "word": "Ostensibly",
+      "definition": "Apparently or purportedly, but perhaps not actually."
+    },
+    {
+      "word": "Ostentatious",
+      "definition": "Characterized by vulgar or pretentious display; designed to impress or attract notice."
+    },
+    {
+      "word": "Paragon",
+      "definition": "A person or thing viewed as a model of excellence."
+    },
+    {
+      "word": "Permeate",
+      "definition": "Spread throughout (something); pervade."
+    },
+    {
+      "word": "Pervasive",
+      "definition": "(Especially of an unwelcome influence or physical effect) spreading widely throughout an area or a group of people.."
+    },
+    {
+      "word": "Petulant",
+      "definition": "(Of a person or their manner) childishly sulky or bad-tempered."
+    },
+    {
+      "word": "Precipice",
+      "definition": "A very steep rock face or cliff, especially a tall one."
+    },
+    {
+      "word": "Predicated",
+      "definition": "Found or base something on."
+    },
+    {
+      "word": "Premonition",
+      "definition": "A strong feeling that something is about to happen, especially something unpleasant."
+    },
+    {
+      "word": "Proclivity",
+      "definition": "A tendency to choose or do something regularly; an inclination or predisposition toward a particular thing."
+    },
+    {
+      "word": "Propagate",
+      "definition": "To cause to spread out and affect a greater number or greater area."
+    },
+    {
+      "word": "Provocation",
+      "definition": "Action or speech that makes someone annoyed or angry, especially deliberately."
+    },
+    {
+      "word": "Rambunctious",
+      "definition": "Uncontrollably exuberant; boisterous."
+    },
+    {
+      "word": "Repudiated",
+      "definition": "Refuse to accept or be associated with."
+    },
+    {
+      "word": "Resolute",
+      "definition": "Admirably purposeful, determined, and unwavering."
+    },
+    {
+      "word": "Reticent",
+      "definition": "Not revealing one's thoughts or feelings readily."
+    },
+    {
+      "word": "Reverential",
+      "definition": "Of the nature of, due to, or characterized by reverence."
+    },
+    {
+      "word": "Reverence",
+      "definition": "Deep respect for someone or something."
+    },
+    {
+      "word": "Sanctimonious",
+      "definition": "Making a show of being morally superior to other people."
+    },
+    {
+      "word": "Sardonic",
+      "definition": "Grimly mocking or cynical."
+    },
+    {
+      "word": "Scrupulous",
+      "definition": "(Of a person or process) diligent, thorough, and extremely attentive to details."
+    },
+    {
+      "word": "Searingly",
+      "definition": "In a very powerful and emotional way."
+    },
+    {
+      "word": "Semiotic",
+      "definition": "Relating to signs and symbols."
+    },
+    {
+      "word": "Serendipity",
+      "definition": "The occurrence and development of events by chance in a happy or beneficial way."
+    },
+    {
+      "word": "Servile",
+      "definition": "Having or showing an excessive willingness to serve or please others."
+    },
+    {
+      "word": "Short-Sightedness",
+      "definition": "Lack of imagination or foresight."
+    },
+    {
+      "word": "Sisyphean",
+      "definition": "Denoting or relating to a task that can never be completed."
+    },
+    {
+      "word": "Solarium",
+      "definition": "A room fitted with extensive areas of glass to admit sunlight."
+    },
+    {
+      "word": "Soliloquy",
+      "definition": "An act of speaking one's thoughts aloud when by oneself or regardless of any hearers, especially by a character in a play."
+    },
+    {
+      "word": "Somnambulant",
+      "definition": "Resembling or characteristic of a sleepwalker; sluggish."
+    },
+    {
+      "word": "Sophistication",
+      "definition": "The quality of being sophisticated."
+    },
+    {
+      "word": "Sophomoric",
+      "definition": "Pretentious or juvenile."
+    },
+    {
+      "word": "Sublime",
+      "definition": "of such excellence, grandeur, or beauty as to inspire great admiration or awe."
+    },
+    {
+      "word": "Substantively",
+      "definition": "In a way that is important, meaningful, or considerable"
+    },
+    {
+      "word": "Supercilious",
+      "definition": "Behaving or looking as though one thinks one is superior to others."
+    },
+    {
+      "word": "Superfluous",
+      "definition": "Unnecessary, especially through being more than enough."
+    },
+    {
+      "word": "Tempestuous",
+      "definition": "Characterized by strong and turbulent or conflicting emotion."
+    },
+    {
+      "word": "Tentative",
+      "definition": "Not certain or fixed; provisional. Or done without confidence; hesitant. "
+    },
+    {
+      "word": "Trepidation",
+      "definition": "A feeling of fear or agitation about something that may happen."
+    },
+    {
+      "word": "Trite",
+      "definition": "(Of a remark, opinion, or idea) overused and consequently of little import; lacking originality or freshness."
+    },
+    {
+      "word": "Unedifying",
+      "definition": "(Especially of an event taking place in public) distasteful; unpleasant."
+    },
+    {
+      "word": "Upended",
+      "definition": "Set or turned on its end or upside down."
+    },
+    {
+      "word": "Usury",
+      "definition": "The illegal action or practice of lending money at unreasonably high rates of interest."
+    },
+    {
+      "word": "Veneer",
+      "definition": "An attractive appearance that covers or disguises someone or something's true nature or feelings."
+    },
+    {
+      "word": "Verbose",
+      "definition": "Using or expressed in more words than are needed."
+    },
+    {
+      "word": "Visceral",
+      "definition": "Relating to deep inward feelings rather than to the intellect."
+    },
+    {
+      "word": "Ataraxia",
+      "definition": "A state of serene calmness, untroubled mind, and freedom from emotional disturbance and anxiety."
+    },
+    {
+      "word": "Defenestration",
+      "definition": "The act of throwing someone or something out of a window."
+    }
+  ],
+  "quotes": [
+    {
+      "text": "Talent is a pursued interest, anything you are willing to practice, you can do.",
+      "author": "Bob Ross"
+    },
+    {
+      "text": "Hard times create strong men, strong men create good times, good times create weak men, and weak men create hard times.",
+      "author": "G. Michael Hopf"
+    },
+    {
+      "text": "The impediment to action advances action. What stands in the way becomes the way.",
+      "author": "Marcus Aurelius"
+    },
+    {
+      "text": "It is not that we have a short time to live, but that we waste a lot of it.",
+      "author": "Seneca"
+    },
+    {
+      "text": "Become who you are, by learning who you are.",
+      "author": "Pindar"
+    },
+    {
+      "text": "Ideas are like fish, you don’t make fish, you catch fish.",
+      "author": "David Lynch"
+    },
+    {
+      "text": "Stress doesn't come from hard work. Stress primarily comes from not taking action over something that you can have some control over.",
+      "author": "Jeff Bezos"
+    }
+    {
+      "text": "If you don’t have what you like, you better like what you have.",
+      "author": "Unknown"
+    },
+    {
+      "text": "Art is never finished, only abandoned.",
+      "author": "Leonardo da Vinci"
+    },
+    {
+      "text": "Make visible what, without you, might perhaps never have been seen.",
+      "author": "Robert Bresson"
+    },
+    {
+      "text": "I think if you do something and it turns out pretty good, then you should go do something else wonderful, not dwell on it for too long. Just figure out what's next.",
+      "author": "Steve Jobs"
+    },
+    {
+      "text": "Focus is about saying no.",
+      "author": "Steve Jobs"
+    },
+    {
+      "text": "You can only connect the dots in the rearview mirror, you have to have faith going forward.",
+      "author": "Steve Jobs"
+    },
+    {
+      "text": "Luck is what happens when preparation meets opportunity.",
+      "author": "Seneca"
+    },
+    {
+      "text": "Standards are a moving target.",
+      "author": "Unknown"
+    },
+    {
+      "text": "Surprises are the joy of life.",
+      "author": "Socrates"
+    },
+    {
+      "text": "You don't build it for yourself. You know what the people want, and you build it for them.",
+      "author": "Walt Disney"
+    },
+    {
+      "text": "If you've got one foot in tomorrow and one foot in yesterday, you'll piss on today.",
+      "author": "Debbie Novotny"
+    },
+    {
+      "text": "It is better to under-promise and over-deliver than to over-promise and under-deliver",
+      "author": "Tom Peters"
+    },
+    {
+      "text": "Early to bed and early to rise, makes a man healthy, wealthy, and wise.",
+      "author": "Benjamin Franklin"
+    },
+    {
+      "text": "Well done is better than well said.",
+      "author": "Benjamin Franklin"
+    },
+    {
+      "text": "Haste makes waste.",
+      "author": "Benjamin Franklin"
+    },
+    {
+      "text": "Energy and persistence conquer all things.",
+      "author": "Benjamin Franklin"
+    },
+    {
+      "text": "Tell me and I forget, teach me and I may remember, involve me and I learn.",
+      "author": "Benjamin Franklin"
+    },
+    {
+      "text": "Knowing is not enough; we must apply.",
+      "author": "Leonardo da Vinci"
+    },
+    {
+      "text": "Learning never exhausts the mind.",
+      "author": "Leonardo da Vinci"
+    },
+    {
+      "text": "Simplicity is the ultimate sophistication.",
+      "author": "Leonardo da Vinci"
+    },
+    {
+      "text": "Good ideas are always crazy until they're not.",
+      "author": "Elon Musk"
+    },
+    {
+      "text": "Wisdom is the daughter of experience.",
+      "author": "Leonardo da Vinci"
+    },
+    {
+      "text": "Learning never exhausts the mind.",
+      "author": "Leonardo da Vinci"
+    },
+    {
+      "text": "There are three classes of people: those who see, those who see when they are shown, those who do not see.",
+      "author": "Leonardo da Vinci"
+    },
+    {
+      "text": "Persistence is very important. You should not give up unless you are forced to give up.",
+      "author": "Elon Musk"
+    },
+    {
+      "text": "The only true wisdom is in knowing you know nothing.",
+      "author": "Socrates"
+    },
+    {
+      "text": "The unexamined life is not worth living.",
+      "author": "Socrates"
+    },
+    {
+      "text": "I cannot teach anybody anything. I can only make them think.",
+      "author": "Socrates"
+    },
+    {
+      "text": "There is only one good, knowledge, and one evil, ignorance.",
+      "author": "Socrates"
+    },
+    {
+      "text": "Strong minds discuss ideas, average minds discuss events, weak minds discuss people.",
+      "author": "Socrates"
+    },
+    {
+      "text": "Wonder is the beginning of wisdom.",
+      "author": "Socrates"
+    },
+    {
+      "text": "To find yourself, think for yourself.",
+      "author": "Socrates"
+    },
+    {
+      "text": "Three may keep a secret, if two of them are dead.",
+      "author": "Benjamin Franklin"
+    },
+    {
+      "text": "Never ruin an apology with an excuse.",
+      "author": "Benjamin Franklin"
+    },
+    {
+      "text": "We are all born ignorant, but one must work hard to remain stupid.",
+      "author": "Benjamin Franklin"
+    },
+    {
+      "text": "I didn't fail the test, I just found 100 ways to do it wrong.",
+      "author": "Benjamin Franklin"
+    },
+    {
+      "text": "An investment in knowledge always pays the best interest.",
+      "author": "Benjamin Franklin"
+    },
+    {
+      "text": "Lost time is never found again.",
+      "author": "Benjamin Franklin"
+    },
+    {
+      "text": "Your time is limited, so don't waste it living someone else's life.",
+      "author": "Steve Jobs"
+    },
+    {
+      "text": "If you live each day as it was your last, someday you'll most certainly be right.",
+      "author": "Steve Jobs"
+    },
+    {
+      "text": "Life is like riding a bicycle. To keep your balance, you must keep moving.",
+      "author": "Albert Einstein"
+    },
+    {
+      "text": "Two things are infinite: the universe and human stupidity; and I'm not sure about the universe.",
+      "author": "Albert Einstein"
+    },
+    {
+      "text": "There are only two ways to live your life. One is as though nothing is a miracle. The other is as though everything is a miracle.",
+      "author": "Albert Einstein"
+    },
+    {
+      "text": "I am enough of an artist to draw freely upon my imagination. Imagination is more important than knowledge. Knowledge is limited. Imagination encircles the world.",
+      "author": "Albert Einstein"
+    },
+    {
+      "text": "Never put off till tomorrow what may be done day after tomorrow just as well.",
+      "author": "Mark Twain"
+    },
+    {
+      "text": "Not all those who wander are lost.",
+      "author": "J.R.R. Tolkien"
+    }
+  ]
+}
