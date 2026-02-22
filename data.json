@@ -25,6 +25,12 @@
       "example": "Over the years, he accrued a vast collection of rare stamps from around the world."
     },
     {
+      "word": "Accumulative",
+      "partOfSpeech": "adjective",
+      "definition": "Gathering or growing by gradual increases.",
+      "example": "The accumulative effects of pollution."
+    },
+    {
       "word": "Adroit",
       "partOfSpeech": "adjective",
       "definition": "Clever or skillful in using the hands or mind.",
@@ -71,6 +77,12 @@
       "partOfSpeech": "verb",
       "definition": "Express approval or agreement, typically officially.",
       "example": "The board assented to the proposal after a long debate about the budget."
+    },
+    {
+      "word": "Atrium",
+      "partOfSpeech": "noun",
+      "definition": "A central hall or court in a modern building, with rooms or galleries opening off it, often glass-covered.",
+      "example": "Plans call for a new atrium to be built behind the facade."
     },
     {
       "word": "Austere",
@@ -337,6 +349,12 @@
       "example": "Without a clear leader, the project was floundering and behind schedule."
     },
     {
+      "word": "Formidable",
+      "partOfSpeech": "adjective",
+      "definition": "Inspiring fear or respect through being impressively large, powerful, intense, or capable.",
+      "example": "A formidable opponent."
+    },
+    {
       "word": "Genteel",
       "partOfSpeech": "adjective",
       "definition": "Polite, refined, or respectable, often in an affected or ostentatious way.",
@@ -469,6 +487,12 @@
       "example": "The waiter was obsequious, constantly bowing and apologizing for things that weren't his fault."
     },
     {
+      "word": "Obtuse",
+      "partOfSpeech": "adjective",
+      "definition": "Annoyingly slow to understand; dull-witted.",
+      "example": "He wondered if the doctor was being deliberately obtuse"
+    },
+    {
       "word": "Ostensibly",
       "partOfSpeech": "adverb",
       "definition": "Apparently or purportedly, but perhaps not actually.",
@@ -515,6 +539,12 @@
       "partOfSpeech": "verb",
       "definition": "Found or base something on.",
       "example": "His theory was predicated on the assumption that the data was accurate."
+    },
+    {
+      "word": "Permeate",
+      "partOfSpeech": "verb",
+      "definition": "Spread throughout (something); pervade.",
+      "example": "The aroma of soup permeated the air."
     },
     {
       "word": "Premonition",
@@ -972,3 +1002,4 @@
     }
   ]
 }
+
