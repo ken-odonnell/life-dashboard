@@ -13,6 +13,12 @@
       "example": "The beauty of the cherry blossoms is ephemeral, lasting only a few days before the wind carries the petals away."
     },
     {
+      "word": "Incantation",
+      "partOfSpeech": "noun",
+      "definition": "A series of words said as a magic spell or charm.",
+      "example": "An incantation to raise the dead."
+    },
+    {
       "word": "Accentuate",
       "partOfSpeech": "verb",
       "definition": "Make more noticeable or prominent.",
@@ -861,6 +867,14 @@
       "author": "Debbie Novotny"
     },
     {
+      "text": "Character is built not in good times, but in bad times; not in a time of plenty, but in a time of adversity.",
+      "author": "Steve Jobs"
+    },
+    {
+      "text": "I don’t really care about being right, I just care about success.",
+      "author": "Steve Jobs"
+    },
+    {
       "text": "It is better to under-promise and over-deliver than to over-promise and under-deliver",
       "author": "Tom Peters"
     },
@@ -1156,6 +1170,7 @@
     }
   ]
 }
+
 
 
 
