@@ -778,15 +778,20 @@
             lucide.createIcons();
         }
 
-        // --- Loop ---
-        function tick() {
+        // --- Optimized Loops ---
+        
+        // 1. Fast Loop (50ms) - Only for the Existential Age decimals
+        function tickAge() {
             const now = new Date();
-            
-            // Age
             const ageYear = (now - BIRTH_DATE) / (1000 * 60 * 60 * 24 * 365.25);
             const decimalAgeEl = document.getElementById('decimal-age');
             if (decimalAgeEl) decimalAgeEl.innerText = ageYear.toFixed(8);
+        }
 
+        // 2. Medium Loop (1000ms) - For the Clocks
+        function tickClocks() {
+            const now = new Date();
+            
             // Master Clock (LA)
             const laTimeStr = now.toLocaleString("en-US", { timeZone: 'America/Los_Angeles' });
             const laDateStr = now.toLocaleDateString("en-US", { timeZone: 'America/Los_Angeles', weekday: 'long', month: 'long', day: 'numeric' });
@@ -811,7 +816,10 @@
                 
                 drawClockOnCanvas(`canvas-${loc.id}`, cityTime, "#718096");
             });
-            
+        }
+
+        // 3. Slow Loop (60,000ms / 1 Minute) - For the Daily Grind
+        function tickGrind() {
             updateDailyGrind();
         }
 
@@ -820,15 +828,23 @@
         initLifeGrid();
         initWorldClocks();
         loadKnowledge(); 
-        tick();
+        
+        // Initial calls so they populate immediately
+        tickAge();
+        tickClocks();
+        tickGrind();
         fetchWeather();
         
-        setInterval(tick, 50); 
-        setInterval(fetchWeather, 60000 * 10);
-        setInterval(rotateKnowledge, 60000 * 2);
+        // Start timers at their optimized speeds
+        setInterval(tickAge, 50);                   // 20 times a second
+        setInterval(tickClocks, 1000);              // Once a second
+        setInterval(tickGrind, 60000);              // Once a minute
+        setInterval(rotateKnowledge, 60000 * 2);    // Every 2 minutes
+        setInterval(fetchWeather, 60000 * 10);      // Every 10 minutes
 
     </script>
 </body>
 </html>
+
 
 
