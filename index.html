@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Temporal Dashboard Pro v22</title>
+    <title>Temporal Dashboard Pro v23</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -105,6 +105,15 @@
             height: 1px;
             background-color: white;
         }
+
+        /* Slide Up Animation */
+        .slide-up {
+            animation: slideUpAnim 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        @keyframes slideUpAnim {
+            0% { opacity: 0; transform: translateY(8px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
     </style>
 </head>
 <body class="min-h-screen p-0 md:p-4 lg:p-6 flex flex-col items-center">
@@ -113,12 +122,10 @@
     <div class="w-full max-w-7xl flex justify-end gap-4 mb-2 px-2 opacity-20 hover:opacity-100 transition-opacity duration-300 z-50">
         <button class="nav-btn active text-[9px] uppercase tracking-widest text-gray-400 hover:text-white transition-colors" onclick="switchTab('main', this)">Main</button>
         <button class="nav-btn text-[9px] uppercase tracking-widest text-gray-400 hover:text-white transition-colors" onclick="switchTab('fitness', this)">Fitness</button>
-        <button class="nav-btn text-[9px] uppercase tracking-widest text-gray-400 hover:text-white transition-colors" onclick="switchTab('market', this)">Market</button>
-        <button class="nav-btn text-[9px] uppercase tracking-widest text-gray-400 hover:text-white transition-colors" onclick="switchTab('explorations', this)">Explorations</button>
     </div>
 
     <!-- ==================== TAB 1: MAIN DASHBOARD ==================== -->
-    <div id="tab-main" class="tab-content max-w-7xl w-full grid grid-cols-1 lg:grid-cols-12 dashboard-container">
+    <div id="tab-main" class="tab-content active max-w-7xl w-full grid grid-cols-1 lg:grid-cols-12 dashboard-container">
 
         <!-- 1. Daily Knowledge -->
         <div class="card p-5 lg:col-span-12 flex flex-col justify-center">
@@ -133,12 +140,14 @@
                             <i data-lucide="shuffle" class="w-3 h-3"></i>
                         </button>
                     </div>
-                    <div class="flex items-baseline gap-2 mb-1">
-                        <div id="vocab-word" class="text-2xl font-bold text-white serif tracking-wide">--</div>
-                        <div id="vocab-pos" class="text-[10px] text-emerald-400 font-mono italic"></div>
+                    <div id="lexicon-content" class="slide-up">
+                        <div class="flex items-baseline gap-2 mb-1">
+                            <div id="vocab-word" class="text-2xl font-bold text-white serif tracking-wide">--</div>
+                            <div id="vocab-pos" class="text-[10px] text-emerald-400 font-mono italic"></div>
+                        </div>
+                        <div id="vocab-def" class="text-xs text-gray-400 leading-relaxed max-h-20 overflow-y-auto text-scroll pr-2 mb-2">Loading data...</div>
+                        <div id="vocab-example" class="text-[10px] text-gray-500 italic border-l-2 border-emerald-500/30 pl-2 hidden leading-snug"></div>
                     </div>
-                    <div id="vocab-def" class="text-xs text-gray-400 leading-relaxed max-h-20 overflow-y-auto text-scroll pr-2 mb-2">Loading data...</div>
-                    <div id="vocab-example" class="text-[10px] text-gray-500 italic border-l-2 border-emerald-500/30 pl-2 hidden leading-snug"></div>
                 </div>
                 
                 <!-- Quote -->
@@ -151,8 +160,10 @@
                             <i data-lucide="shuffle" class="w-3 h-3"></i>
                         </button>
                     </div>
-                    <div id="quote-text" class="text-sm text-gray-200 leading-relaxed serif mb-2 max-h-24 overflow-y-auto text-scroll pr-2">"--"</div>
-                    <div id="quote-author" class="text-[10px] text-gray-500 font-mono tracking-widest uppercase text-right">- --</div>
+                    <div id="quote-content" class="slide-up">
+                        <div id="quote-text" class="text-sm text-gray-200 leading-relaxed serif mb-2 max-h-24 overflow-y-auto text-scroll pr-2">"--"</div>
+                        <div id="quote-author" class="text-[10px] text-gray-500 font-mono tracking-widest uppercase text-right">- --</div>
+                    </div>
                 </div>
 
                 <!-- Values / Excerpts -->
@@ -165,8 +176,10 @@
                             <i data-lucide="shuffle" class="w-3 h-3"></i>
                         </button>
                     </div>
-                    <div id="principle-title" class="text-sm font-bold text-blue-300 mb-1 tracking-wide">--</div>
-                    <div id="principle-text" class="text-xs text-gray-400 leading-relaxed max-h-24 overflow-y-auto text-scroll pr-2">Loading data...</div>
+                    <div id="principle-content" class="slide-up">
+                        <div id="principle-title" class="text-sm font-bold text-blue-300 mb-1 tracking-wide">--</div>
+                        <div id="principle-text" class="text-xs text-gray-400 leading-relaxed max-h-24 overflow-y-auto text-scroll pr-2">Loading data...</div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -182,7 +195,7 @@
                         </div>
                         <div id="master-date" class="text-gray-400 mt-2 text-lg font-light">Loading date...</div>
                     </div>
-                    <!-- Square Chronograph Analog Clock -->
+                    <!-- Monochrome Square Chronograph Analog Clock -->
                     <div class="relative w-24 h-24 md:w-32 md:h-32 flex-shrink-0 ml-0 lg:ml-6 mt-4 md:mt-0">
                         <canvas id="analogClock" width="200" height="200" class="w-full h-full"></canvas>
                     </div>
@@ -251,8 +264,10 @@
             </div>
         </div>
 
-        <!-- 6. Advanced Weather -->
-        <div class="card p-5 lg:col-span-6 flex flex-col justify-between h-[240px]">
+        <!-- ================= BOTTOM ROW (All matching h-[350px]) ================= -->
+
+        <!-- 6. Advanced Weather (5 cols) -->
+        <div class="card p-5 lg:col-span-5 flex flex-col justify-between h-[350px]">
             <div class="flex justify-between items-start mb-2">
                 <div class="flex items-center gap-3">
                     <div>
@@ -263,13 +278,19 @@
                         <span class="text-[10px] text-gray-500 leading-tight">Feels like <span id="feels-like" class="text-gray-400">--°</span></span>
                     </div>
                 </div>
+                <div class="text-right">
+                    <h3 class="text-gray-500 text-xs uppercase tracking-widest flex items-center justify-end gap-1.5 mb-0.5">
+                        Los Angeles, CA <i data-lucide="cloud-sun" class="w-3 h-3 text-yellow-500"></i>
+                    </h3>
+                    <div class="text-[9px] text-gray-600">Zip: 90046</div>
+                </div>
             </div>
             
-            <div class="w-full flex-1 relative min-h-[90px] mt-1 mb-3">
+            <div class="w-full flex-1 relative min-h-[90px] mt-1 mb-2">
                 <canvas id="weatherChart"></canvas>
             </div>
             
-            <div class="w-full grid grid-cols-6 gap-2 text-center pt-2 border-t border-[#2e2e2e]">
+            <div class="w-full grid grid-cols-6 gap-2 text-center pt-2 border-t border-[#2e2e2e] mb-2">
                 <div class="flex flex-col justify-center">
                     <div class="text-[8px] text-gray-500 uppercase">Sunrise</div>
                     <div id="sunrise" class="font-bold text-white text-[10px]">--:--</div>
@@ -295,134 +316,78 @@
                     <div id="visibility" class="font-bold text-white text-[10px]">--</div>
                 </div>
             </div>
+
+            <!-- 7-Day Forecast Strip -->
+            <div class="border-t border-[#2e2e2e] pt-2 mt-auto">
+                <div id="forecast-list" class="flex justify-between w-full"></div>
+            </div>
         </div>
 
-        <!-- 7. Global Operations -->
-        <div class="card p-5 lg:col-span-6 flex flex-col justify-between h-[240px]">
-            <div class="flex items-center gap-2 mb-2">
+        <!-- 7. Global Operations (Ultra Compact - 3 cols) -->
+        <div class="card p-5 lg:col-span-3 flex flex-col justify-between h-[350px]">
+            <div class="flex items-center gap-2 mb-2 pb-2 border-b border-[#2e2e2e]">
                 <h3 class="text-gray-500 text-xs uppercase tracking-widest flex items-center gap-2">
                     <i data-lucide="globe" class="w-4 h-4 text-blue-400"></i> Global Operations
                 </h3>
             </div>
-            
             <div class="flex flex-col flex-1 justify-center">
-                <div id="world-clocks-container" class="w-full grid grid-cols-2 md:grid-cols-3 gap-y-8 gap-x-4">
-                    <!-- JS Injected purely text-based clocks -->
+                <!-- Very tight 2x3 Grid -->
+                <div id="world-clocks-container" class="w-full grid grid-cols-2 gap-y-6 gap-x-2">
+                    <!-- JS Injected -->
                 </div>
+            </div>
+        </div>
+
+        <!-- 8. Market Sparklines (Main Tab - 4 cols) -->
+        <div class="card p-0 lg:col-span-4 flex flex-col h-[350px]">
+            <div class="p-4 border-b border-[#2e2e2e] flex-shrink-0">
+                <h3 class="text-gray-500 text-xs uppercase tracking-widest flex items-center gap-2">
+                    <i data-lucide="trending-up" class="w-4 h-4 text-emerald-500"></i> Markets
+                </h3>
+            </div>
+            <!-- 2 cols x 3 rows grid taking up remaining space perfectly -->
+            <div id="stocks-container" class="grid grid-cols-2 gap-[1px] bg-[#2e2e2e] flex-1 overflow-hidden">
+                <!-- Simulated Stocks JS Injected -->
             </div>
         </div>
 
     </div>
 
     <!-- ==================== TAB 2: FITNESS ==================== -->
-    <div id="tab-fitness" class="tab-content hidden max-w-7xl w-full grid-cols-1 dashboard-container">
-        <div class="card p-6 flex flex-col h-[85vh] w-full">
-            <div class="mb-6 pt-2 pl-2">
-                <div class="text-lg md:text-xl font-bold text-white mb-2 tracking-wide flex items-center gap-2">
-                    Target Marathon Time: <del class="text-gray-600 font-mono">03:50:00</del> <span class="text-[#d97706] font-mono">03:10:00</span>
-                </div>
-                <div class="border-l-2 border-white pl-4 text-xl font-serif text-gray-200 py-1">
-                    Train Like You Race, Race Like You Train
-                </div>
-            </div>
-            <div class="w-full flex-1 relative rounded overflow-hidden border border-[#2e2e2e]">
-                <iframe src="https://ken-odonnell.github.io/marathon-results/" class="w-full h-full border-0 absolute inset-0 bg-[#0f0f0f]"></iframe>
-            </div>
-        </div>
-    </div>
-
-    <!-- ==================== TAB 3: MARKET ==================== -->
-    <div id="tab-market" class="tab-content hidden max-w-7xl w-full flex-col dashboard-container">
-        <!-- Stock Tickers with Sparklines -->
-        <div class="card p-0 w-full">
-            <div class="p-4 border-b border-[#2e2e2e]">
-                <h3 class="text-gray-500 text-xs uppercase tracking-widest flex items-center gap-2">
-                    <i data-lucide="trending-up" class="w-4 h-4 text-emerald-500"></i> Market Overview
-                </h3>
-            </div>
-            <div id="stocks-container" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-[1px] bg-[#2e2e2e]">
-                <!-- Simulated Stocks JS Injected -->
-            </div>
+    <div id="tab-fitness" class="tab-content hidden max-w-7xl w-full dashboard-container">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-[1px] w-full">
             
-            <!-- Market Detail Expanded View -->
-            <div id="stock-detail-view" class="hidden bg-[#131313] p-6 border-t border-[#2e2e2e]">
-                <div class="flex justify-between items-start">
-                    <div>
-                        <h2 id="detail-name" class="text-2xl font-bold text-white tracking-wide">--</h2>
-                        <span id="detail-status" class="inline-flex items-center gap-1.5 text-xs mt-2 px-2 py-1 rounded bg-[#1e1e1e] text-emerald-400 border border-[#2e2e2e]">
-                            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> Market Open
-                        </span>
+            <!-- Left: Marathon -->
+            <div class="card p-6 flex flex-col h-[85vh] w-full">
+                <div class="mb-6 pt-2 pl-2">
+                    <div class="text-lg md:text-xl font-bold text-white mb-2 tracking-wide flex items-center gap-2">
+                        Target Marathon Time: <del class="text-gray-600 font-mono">03:50:00</del> <span class="text-[#d97706] font-mono">03:10:00</span>
                     </div>
-                    <div class="text-right">
-                        <div id="detail-price" class="text-3xl font-mono text-white">--</div>
-                        <div id="detail-change" class="text-sm font-mono mt-1">--</div>
+                    <div class="border-l-2 border-white pl-4 text-xl font-serif text-gray-200 py-1">
+                        Train Like You Race, Race Like You Train
                     </div>
                 </div>
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6 pt-4 border-t border-[#2e2e2e]">
-                    <div><div class="text-[10px] text-gray-500 uppercase">Open</div><div id="detail-open" class="text-sm font-mono text-gray-300 mt-1">--</div></div>
-                    <div><div class="text-[10px] text-gray-500 uppercase">High</div><div id="detail-high" class="text-sm font-mono text-gray-300 mt-1">--</div></div>
-                    <div><div class="text-[10px] text-gray-500 uppercase">Low</div><div id="detail-low" class="text-sm font-mono text-gray-300 mt-1">--</div></div>
-                    <div><div class="text-[10px] text-gray-500 uppercase">Volume</div><div id="detail-vol" class="text-sm font-mono text-gray-300 mt-1">--</div></div>
+                <div class="w-full flex-1 relative rounded overflow-hidden border border-[#2e2e2e]">
+                    <iframe src="https://ken-odonnell.github.io/marathon-results/" class="w-full h-full border-0 absolute inset-0 bg-[#0f0f0f]"></iframe>
                 </div>
             </div>
-        </div>
 
-        <!-- Market News -->
-        <div class="card p-6 min-h-[50vh] mt-[1px]">
-            <h3 class="text-gray-500 text-xs uppercase tracking-widest mb-4 flex items-center gap-2">
-                <i data-lucide="newspaper" class="w-4 h-4 text-blue-400"></i> Financial Insights
-            </h3>
-            <div id="news-container" class="flex flex-col gap-0 border-t border-[#2e2e2e]">
-                <!-- Simulated News JS Injected -->
+            <!-- Right: Workout App -->
+            <div class="card p-6 flex flex-col h-[85vh] w-full">
+                <div class="mb-6 pt-2 pl-2">
+                    <div class="text-lg md:text-xl font-bold text-white mb-2 tracking-wide flex items-center gap-2">
+                        Workout Regimen
+                    </div>
+                    <div class="border-l-2 border-white pl-4 text-sm font-serif text-gray-400 py-1">
+                        Active Training Program
+                    </div>
+                </div>
+                <div class="w-full flex-1 relative rounded overflow-hidden border border-[#2e2e2e]">
+                    <iframe src="https://ken-odonnell.github.io/workout-app/" class="w-full h-full border-0 absolute inset-0 bg-[#0f0f0f]"></iframe>
+                </div>
             </div>
-        </div>
-    </div>
 
-    <!-- ==================== TAB 4: EXPLORATIONS ==================== -->
-    <div id="tab-explorations" class="tab-content hidden max-w-7xl w-full grid grid-cols-1 md:grid-cols-2 gap-[1px] dashboard-container">
-        
-        <!-- News Digest -->
-        <div class="card p-6 flex flex-col h-full">
-            <h3 class="text-gray-500 text-xs uppercase tracking-widest mb-4 flex items-center gap-2 border-b border-[#2e2e2e] pb-2">
-                <i data-lucide="globe-2" class="w-4 h-4 text-blue-400"></i> News Digest
-            </h3>
-            <div class="flex flex-col gap-4 flex-1" id="explore-news">
-                <!-- JS Injected -->
-            </div>
         </div>
-
-        <!-- Curiosity / Teach Me -->
-        <div class="card p-6 flex flex-col h-full">
-            <h3 class="text-gray-500 text-xs uppercase tracking-widest mb-4 flex items-center gap-2 border-b border-[#2e2e2e] pb-2">
-                <i data-lucide="lightbulb" class="w-4 h-4 text-yellow-500"></i> Curiosity
-            </h3>
-            <div class="flex flex-col flex-1 justify-center py-4">
-                <h4 class="text-lg font-bold text-white mb-2" id="explore-curiosity-title">Loading...</h4>
-                <p class="text-sm text-gray-400 leading-relaxed" id="explore-curiosity-desc">...</p>
-            </div>
-        </div>
-
-        <!-- Joke of the Day -->
-        <div class="card p-6 flex flex-col h-full">
-            <h3 class="text-gray-500 text-xs uppercase tracking-widest mb-4 flex items-center gap-2 border-b border-[#2e2e2e] pb-2">
-                <i data-lucide="smile" class="w-4 h-4 text-emerald-400"></i> Joke of the Day
-            </h3>
-            <div class="flex flex-col flex-1 justify-center items-center text-center px-4 py-6">
-                <p class="text-lg font-serif text-gray-300 italic" id="explore-joke">"Loading joke..."</p>
-            </div>
-        </div>
-
-        <!-- On This Day -->
-        <div class="card p-6 flex flex-col h-full">
-            <h3 class="text-gray-500 text-xs uppercase tracking-widest mb-4 flex items-center gap-2 border-b border-[#2e2e2e] pb-2">
-                <i data-lucide="calendar-days" class="w-4 h-4 text-purple-400"></i> On This Day
-            </h3>
-            <div class="flex flex-col flex-1 justify-center py-4">
-                <div class="text-3xl font-mono font-bold text-purple-400 mb-2" id="explore-otd-year">----</div>
-                <p class="text-sm text-gray-300 leading-relaxed" id="explore-otd-desc">Loading historical event...</p>
-            </div>
-        </div>
-
     </div>
 
     <script>
@@ -450,13 +415,18 @@
             
             const target = document.getElementById('tab-' + tabId);
             target.classList.remove('hidden');
-            // Use specific display type based on tab ID
-            if(tabId === 'main') target.classList.add('grid');
-            else if(tabId === 'fitness') target.classList.add('grid');
-            else if(tabId === 'market') target.classList.add('flex');
-            else if(tabId === 'explorations') target.classList.add('grid');
+            target.classList.add('active'); // active uses flex/grid
             
             btnElement.classList.add('active', 'text-white');
+        }
+
+        // --- Transition Helper ---
+        function triggerSlideUp(elementId) {
+            const el = document.getElementById(elementId);
+            if (!el) return;
+            el.classList.remove('slide-up');
+            void el.offsetWidth; // Trigger reflow to restart animation
+            el.classList.add('slide-up');
         }
 
         // --- Knowledge Data Fetching ---
@@ -481,47 +451,60 @@
             if (!knowledgeData.words || !knowledgeData.words.length) return;
             const randomWord = knowledgeData.words[Math.floor(Math.random() * knowledgeData.words.length)];
             
-            const vocabWordEl = document.getElementById('vocab-word');
-            if (vocabWordEl) vocabWordEl.innerText = randomWord.word;
+            triggerSlideUp('lexicon-content');
             
-            const vocabDefEl = document.getElementById('vocab-def');
-            if (vocabDefEl) vocabDefEl.innerText = randomWord.definition;
-            
-            const posEl = document.getElementById('vocab-pos');
-            if (posEl) {
-                if (randomWord.partOfSpeech) {
-                    posEl.innerText = randomWord.partOfSpeech;
-                    posEl.style.display = 'block';
-                } else { posEl.style.display = 'none'; }
-            }
+            setTimeout(() => {
+                const vocabWordEl = document.getElementById('vocab-word');
+                if (vocabWordEl) vocabWordEl.innerText = randomWord.word;
+                
+                const vocabDefEl = document.getElementById('vocab-def');
+                if (vocabDefEl) vocabDefEl.innerText = randomWord.definition;
+                
+                const posEl = document.getElementById('vocab-pos');
+                if (posEl) {
+                    if (randomWord.partOfSpeech) {
+                        posEl.innerText = randomWord.partOfSpeech;
+                        posEl.style.display = 'block';
+                    } else { posEl.style.display = 'none'; }
+                }
 
-            const exEl = document.getElementById('vocab-example');
-            if (exEl) {
-                if (randomWord.example) {
-                    exEl.innerText = `"${randomWord.example}"`;
-                    exEl.classList.remove('hidden');
-                } else { exEl.classList.add('hidden'); }
-            }
+                const exEl = document.getElementById('vocab-example');
+                if (exEl) {
+                    if (randomWord.example) {
+                        exEl.innerText = `"${randomWord.example}"`;
+                        exEl.classList.remove('hidden');
+                    } else { exEl.classList.add('hidden'); }
+                }
+            }, 50); // slight delay to ensure reflow completes before DOM update
         }
 
         function rotateQuote() {
             if (!knowledgeData.quotes || !knowledgeData.quotes.length) return;
             const randomQuote = knowledgeData.quotes[Math.floor(Math.random() * knowledgeData.quotes.length)];
-            const quoteTextEl = document.getElementById('quote-text');
-            if (quoteTextEl) quoteTextEl.innerText = `"${randomQuote.text}"`;
             
-            const quoteAuthorEl = document.getElementById('quote-author');
-            if (quoteAuthorEl) quoteAuthorEl.innerText = `- ${randomQuote.author}`;
+            triggerSlideUp('quote-content');
+            
+            setTimeout(() => {
+                const quoteTextEl = document.getElementById('quote-text');
+                if (quoteTextEl) quoteTextEl.innerText = `"${randomQuote.text}"`;
+                
+                const quoteAuthorEl = document.getElementById('quote-author');
+                if (quoteAuthorEl) quoteAuthorEl.innerText = `- ${randomQuote.author}`;
+            }, 50);
         }
         
         function rotatePrinciple() {
-            const principleTitleEl = document.getElementById('principle-title');
-            const principleTextEl = document.getElementById('principle-text');
-            
             if (!knowledgeData.principles || !knowledgeData.principles.length) return;
             const randomPrin = knowledgeData.principles[Math.floor(Math.random() * knowledgeData.principles.length)];
-            if (principleTitleEl) principleTitleEl.innerText = randomPrin.title;
-            if (principleTextEl) principleTextEl.innerText = randomPrin.text;
+            
+            triggerSlideUp('principle-content');
+            
+            setTimeout(() => {
+                const principleTitleEl = document.getElementById('principle-title');
+                const principleTextEl = document.getElementById('principle-text');
+                if (principleTitleEl) principleTitleEl.innerText = randomPrin.title;
+                if (principleTextEl) principleTextEl.innerText = randomPrin.text;
+            }, 50);
         }
 
         function rotateKnowledge() { rotateWord(); rotateQuote(); rotatePrinciple(); }
@@ -569,7 +552,7 @@
             if (yearGridContainer) yearGridContainer.innerHTML = yearHtml;
         }
 
-        // --- 2. Square Chronograph Analog Clock ---
+        // --- 2. Square Chronograph Analog Clock (Monochrome) ---
         function drawSquareChronograph(canvasId, timeDate) {
             const canvas = document.getElementById(canvasId);
             if(!canvas) return;
@@ -578,14 +561,13 @@
             const h = canvas.height;
             const cx = w / 2;
             const cy = h / 2;
-            // Radius for the inner circular dial
             const r = Math.min(cx, cy) * 0.85;
 
             ctx.clearRect(0, 0, w, h);
             ctx.save();
             ctx.translate(cx, cy);
 
-            // Square Bezel (Bell & Ross style)
+            // Square Bezel
             ctx.fillStyle = "#1e1e1e";
             ctx.strokeStyle = "#3a3a3a";
             ctx.lineWidth = 2;
@@ -605,7 +587,6 @@
                     ctx.beginPath(); 
                     ctx.arc(sx, sy, 3, 0, Math.PI*2); 
                     ctx.fill();
-                    // Draw a slot in the screw
                     ctx.strokeStyle = "#111";
                     ctx.lineWidth = 1;
                     ctx.beginPath();
@@ -615,15 +596,15 @@
                 });
             });
 
-            // Inner Circular Dial
-            ctx.fillStyle = "#0c0c0c";
+            // Inner Circular Dial (Changed to #191919)
+            ctx.fillStyle = "#191919"; 
             ctx.beginPath(); 
             ctx.arc(0, 0, r, 0, Math.PI*2); 
             ctx.fill();
             ctx.strokeStyle = "#333"; 
             ctx.stroke();
 
-            // Outer Ticks (Seconds/Minutes)
+            // Outer Ticks
             for(let i=0; i<60; i++){
                 const angle = (i * Math.PI / 30) - Math.PI/2;
                 const isHour = i % 5 === 0;
@@ -636,21 +617,16 @@
                 ctx.stroke();
             }
 
-            // --- Sub-dials ---
+            // --- Sub-dials (Changed colors to subtle grays) ---
             const subR = r * 0.26;
             const hour24 = timeDate.getHours() + (timeDate.getMinutes()/60);
+            drawSubDial(ctx, -r*0.45, 0, subR, (hour24 / 24) * Math.PI*2, "#a3a3a3"); // Left
             
-            // Left Sub-dial: 24 Hour Time
-            drawSubDial(ctx, -r*0.45, 0, subR, (hour24 / 24) * Math.PI*2, "#60a5fa"); // Blue hand
+            const monthVal = timeDate.getMonth() + (timeDate.getDate()/31);
+            drawSubDial(ctx, r*0.45, 0, subR, (monthVal / 12) * Math.PI*2, "#a3a3a3"); // Right
             
-            // Right Sub-dial: Month
-            const monthVal = timeDate.getMonth() + (timeDate.getDate()/31); // 0-11
-            drawSubDial(ctx, r*0.45, 0, subR, (monthVal / 12) * Math.PI*2, "#a78bfa"); // Purple hand
-            
-            // Bottom Sub-dial: Day of Week
-            // Sun=0, Sat=6. Normalize to 0-7
             let dayVal = timeDate.getDay() + (timeDate.getHours()/24);
-            drawSubDial(ctx, 0, r*0.45, subR, (dayVal / 7) * Math.PI*2, "#34d399"); // Emerald hand
+            drawSubDial(ctx, 0, r*0.45, subR, (dayVal / 7) * Math.PI*2, "#a3a3a3"); // Bottom
 
             // --- Main Hands ---
             const hr = timeDate.getHours();
@@ -661,7 +637,7 @@
             const mRad = min*Math.PI/30;
             const sRad = sec*Math.PI/30;
 
-            // Hour Hand
+            // Hour
             ctx.beginPath();
             ctx.lineWidth = 4;
             ctx.lineCap = "round";
@@ -670,7 +646,7 @@
             ctx.lineTo(Math.cos(hRad - Math.PI/2)*r*0.5, Math.sin(hRad - Math.PI/2)*r*0.5);
             ctx.stroke();
 
-            // Minute Hand
+            // Minute
             ctx.beginPath();
             ctx.lineWidth = 2.5;
             ctx.strokeStyle = "#94a3b8";
@@ -678,21 +654,20 @@
             ctx.lineTo(Math.cos(mRad - Math.PI/2)*r*0.75, Math.sin(mRad - Math.PI/2)*r*0.75);
             ctx.stroke();
 
-            // Sweeping Second Hand (Yellow)
+            // Sweeping Second Hand (Changed to White/Silver)
             ctx.beginPath();
             ctx.lineWidth = 1.5;
-            ctx.strokeStyle = "#facc15";
-            ctx.moveTo(Math.cos(sRad + Math.PI/2)*r*0.15, Math.sin(sRad + Math.PI/2)*r*0.15); // Tail
+            ctx.strokeStyle = "#e2e8f0";
+            ctx.moveTo(Math.cos(sRad + Math.PI/2)*r*0.15, Math.sin(sRad + Math.PI/2)*r*0.15); 
             ctx.lineTo(Math.cos(sRad - Math.PI/2)*r*0.85, Math.sin(sRad - Math.PI/2)*r*0.85);
             ctx.stroke();
 
-            // Center Pin
+            // Center Pin (Changed to White/Silver)
             ctx.beginPath(); 
             ctx.arc(0,0, 3.5, 0, Math.PI*2); 
-            ctx.fillStyle = "#facc15"; 
+            ctx.fillStyle = "#e2e8f0"; 
             ctx.fill();
             
-            // Inner Pin detail
             ctx.beginPath(); 
             ctx.arc(0,0, 1.5, 0, Math.PI*2); 
             ctx.fillStyle = "#1e1e1e"; 
@@ -701,9 +676,7 @@
             ctx.restore();
         }
 
-        // Helper for mini sub-dials
         function drawSubDial(ctx, cx, cy, r, angle, color) {
-            // Background
             ctx.beginPath(); 
             ctx.arc(cx, cy, r, 0, Math.PI*2);
             ctx.fillStyle = "#161616";
@@ -712,14 +685,12 @@
             ctx.lineWidth = 1;
             ctx.stroke();
 
-            // Crosshairs
             ctx.beginPath();
             ctx.moveTo(cx, cy - r + 2); ctx.lineTo(cx, cy + r - 2);
             ctx.moveTo(cx - r + 2, cy); ctx.lineTo(cx + r - 2, cy);
             ctx.strokeStyle = "#222";
             ctx.stroke();
 
-            // Hand
             ctx.beginPath();
             ctx.moveTo(cx, cy);
             ctx.lineTo(cx + Math.cos(angle - Math.PI/2)*r*0.8, cy + Math.sin(angle - Math.PI/2)*r*0.8);
@@ -728,19 +699,18 @@
             ctx.lineCap = "round";
             ctx.stroke();
 
-            // Center dot
             ctx.beginPath(); ctx.arc(cx, cy, 1.5, 0, Math.PI*2); ctx.fillStyle = "#eee"; ctx.fill();
         }
 
-        // --- 3. Global Operations ---
+        // --- 3. Global Operations (Ultra Compact) ---
         function initWorldClocks() {
             const container = document.getElementById('world-clocks-container');
             let html = '';
             LOCATIONS.forEach(loc => {
                 html += `
-                    <div class="flex flex-col items-center justify-center p-2 rounded-lg">
-                        <span class="text-xs text-gray-500 uppercase tracking-widest mb-1 truncate leading-none w-full text-center">${loc.name}</span>
-                        <span id="digital-${loc.id}" class="font-mono text-2xl md:text-3xl text-white font-bold leading-none mt-1">--:--</span>
+                    <div class="flex flex-col items-center justify-center p-1 rounded-lg">
+                        <span class="text-[9px] text-gray-500 uppercase tracking-widest mb-0.5 truncate leading-none w-full text-center">${loc.name}</span>
+                        <span id="digital-${loc.id}" class="font-mono text-xl md:text-2xl text-white font-bold leading-none mt-0.5">--:--</span>
                     </div>
                 `;
             });
@@ -810,7 +780,7 @@
             if (container) container.innerHTML = html;
         }
 
-        // --- 6. Weather ---
+        // --- 6. Weather (Bar Chart Style + 90046 Zip Code) ---
         let weatherChartInst = null;
         let weatherSunriseHr = 6.5; 
         let weatherSunsetHr = 18.5;
@@ -846,9 +816,10 @@
 
         async function fetchWeather() {
             try {
+                // Zip code 90046 Coordinates: 34.0980, -118.3625
                 const [weatherRes, airRes] = await Promise.all([
-                    fetch('https://api.open-meteo.com/v1/forecast?latitude=34.05&longitude=-118.24&current=temperature_2m,relative_humidity_2m,apparent_temperature,weather_code,wind_speed_10m&hourly=temperature_2m&daily=weather_code,temperature_2m_max,temperature_2m_min,uv_index_max,sunrise,sunset&temperature_unit=fahrenheit&wind_speed_unit=mph&timezone=America%2FLos_Angeles'),
-                    fetch('https://air-quality-api.open-meteo.com/v1/air-quality?latitude=34.05&longitude=-118.24&current=us_aqi')
+                    fetch('https://api.open-meteo.com/v1/forecast?latitude=34.0980&longitude=-118.3625&current=temperature_2m,relative_humidity_2m,apparent_temperature,weather_code,wind_speed_10m&hourly=temperature_2m&daily=weather_code,temperature_2m_max,temperature_2m_min,uv_index_max,sunrise,sunset&temperature_unit=fahrenheit&wind_speed_unit=mph&timezone=America%2FLos_Angeles'),
+                    fetch('https://air-quality-api.open-meteo.com/v1/air-quality?latitude=34.0980&longitude=-118.3625&current=us_aqi')
                 ]);
 
                 const data = await weatherRes.json();
@@ -889,6 +860,7 @@
                 if (sunsetEl) sunsetEl.innerText = sunsetStr;
 
                 updateChart(data.hourly);
+                updateForecastList(data.daily);
 
             } catch (e) { console.error("Weather Error", e); }
         }
@@ -993,28 +965,45 @@
                 }
             });
         }
+        
+        function updateForecastList(daily) {
+            const container = document.getElementById('forecast-list');
+            if (!container) return;
+            const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+            let html = '';
+            for(let i=0; i<7; i++) {
+                const dateParts = daily.time[i].split('-');
+                const d = new Date(dateParts[0], dateParts[1]-1, dateParts[2]);
+                const dayName = i===0 ? 'Today' : days[d.getDay()];
+                const info = getWeatherInfo(daily.weather_code[i]);
+                const max = Math.round(daily.temperature_2m_max[i]);
+                const min = Math.round(daily.temperature_2m_min[i]);
+                html += `
+                    <div class="flex flex-col items-center flex-1">
+                        <span class="text-[10px] text-gray-500 uppercase mb-0.5 font-medium">${dayName}</span>
+                        <i data-lucide="${info.i}" class="w-5 h-5 text-gray-300 mb-0.5"></i>
+                        <span class="text-xs font-bold text-white">${max}°</span>
+                        <span class="text-[9px] text-gray-500">${min}°</span>
+                    </div>
+                `;
+            }
+            container.innerHTML = html;
+            lucide.createIcons();
+        }
 
-        // --- 7. Market Simulation & Sparklines ---
+        // --- 7. Market Sparklines ---
         const MOCK_STOCKS = [
-            { sym: "VOO", name: "Vanguard S&P 500 ETF", price: 472.15, base: 472, open: 470.10, high: 473.50, low: 469.80, vol: "24.5M" },
-            { sym: "TSM", name: "Taiwan Semiconductor Mfg. Co. Ltd.", price: 141.20, base: 141, open: 140.05, high: 142.80, low: 139.50, vol: "18.2M" },
-            { sym: "NVDA", name: "NVIDIA Corporation", price: 885.50, base: 885, open: 880.20, high: 890.10, low: 875.00, vol: "55.1M" },
-            { sym: "SWPPX", name: "Schwab S&P 500 Index Fund", price: 79.40, base: 79, open: 79.10, high: 79.60, low: 78.90, vol: "N/A" },
-            { sym: "SCHD", name: "Schwab US Dividend Equity ETF", price: 78.10, base: 78, open: 78.00, high: 78.40, low: 77.80, vol: "5.4M" },
-            { sym: "SFSNX", name: "Schwab 1000 Index Fund", price: 15.65, base: 15, open: 15.60, high: 15.70, low: 15.55, vol: "N/A" }
-        ];
-
-        const MOCK_NEWS = [
-            { time: "10:15 AM", text: "Nvidia announces next-gen AI superchip architecture, sending semi stocks higher." },
-            { time: "09:30 AM", text: "S&P 500 opens flat as investors await latest inflation data reading." },
-            { time: "08:45 AM", text: "TSM reports strong monthly revenue, driven by robust high-performance computing demand." },
-            { time: "Yesterday", text: "Vanguard S&P 500 ETF (VOO) sees record inflows amid tech rally." }
+            { sym: "VOO", price: 472.15, base: 472 },
+            { sym: "TSM", price: 141.20, base: 141 },
+            { sym: "NVDA", price: 885.50, base: 885 },
+            { sym: "SWPPX", price: 79.40, base: 79 },
+            { sym: "SCHD", price: 78.10, base: 78 },
+            { sym: "SFSNX", price: 15.65, base: 15 }
         ];
 
         function initMarket() {
             const stContainer = document.getElementById('stocks-container');
-            const nwContainer = document.getElementById('news-container');
-            if(!stContainer || !nwContainer) return;
+            if(!stContainer) return;
 
             let stHtml = '';
             MOCK_STOCKS.forEach((s, index) => {
@@ -1033,18 +1022,12 @@
                 const color = isPos ? 'text-emerald-400' : 'text-red-400';
                 const sign = isPos ? '+' : '';
                 
-                // Save simulated data back to object for detail view
-                s.simPrice = finalVal.toFixed(2);
-                s.simChange = `${sign}${change.toFixed(2)}`;
-                s.simPct = `${sign}${pct}%`;
-                s.isPos = isPos;
-
                 stHtml += `
-                    <div onclick="showStockDetails(${index})" class="bg-[#191919] p-4 flex flex-col justify-between border-r border-[#2e2e2e] relative h-28 overflow-hidden cursor-pointer hover:bg-[#222] transition-colors">
+                    <div class="bg-[#191919] p-4 flex flex-col justify-between relative h-full overflow-hidden">
                         <span class="text-xs text-gray-400 font-bold tracking-widest z-10">${s.sym}</span>
                         <div class="mt-auto z-10">
-                            <div class="text-xl font-mono text-white leading-none mb-1">${s.simPrice}</div>
-                            <div class="text-[10px] ${color} font-mono">${s.simChange} (${s.simPct})</div>
+                            <div class="text-xl font-mono text-white leading-none mb-1">${finalVal.toFixed(2)}</div>
+                            <div class="text-[10px] ${color} font-mono">${sign}${change.toFixed(2)} (${sign}${pct}%)</div>
                         </div>
                         <div class="absolute bottom-0 left-0 w-full h-1/2 opacity-70">
                             <canvas id="sparkline-${index}"></canvas>
@@ -1058,11 +1041,12 @@
             MOCK_STOCKS.forEach((s, index) => {
                 const ctx = document.getElementById(`sparkline-${index}`);
                 if(!ctx) return;
-                const color = s.isPos ? '#34d399' : '#f87171';
+                const isPos = s.history[s.history.length-1] >= s.history[0];
+                const color = isPos ? '#34d399' : '#f87171';
                 
                 const canvasCtx = ctx.getContext('2d');
                 const gradient = canvasCtx.createLinearGradient(0, 0, 0, 50);
-                gradient.addColorStop(0, s.isPos ? 'rgba(52, 211, 153, 0.4)' : 'rgba(248, 113, 113, 0.4)');
+                gradient.addColorStop(0, isPos ? 'rgba(52, 211, 153, 0.4)' : 'rgba(248, 113, 113, 0.4)');
                 gradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
 
                 new Chart(ctx, {
@@ -1088,85 +1072,6 @@
                     }
                 });
             });
-
-            // Generate News
-            let nwHtml = '';
-            MOCK_NEWS.forEach(n => {
-                nwHtml += `
-                    <div class="flex flex-col md:flex-row md:items-center py-3 border-b border-[#2e2e2e] last:border-0 hover:bg-[#1e1e1e] transition-colors px-2 rounded">
-                        <span class="text-[10px] text-gray-500 font-mono w-24 flex-shrink-0 mb-1 md:mb-0">${n.time}</span>
-                        <span class="text-xs text-gray-300 leading-snug">${n.text}</span>
-                    </div>
-                `;
-            });
-            nwContainer.innerHTML = nwHtml;
-        }
-
-        // Display Detailed Stock Info
-        function showStockDetails(index) {
-            const s = MOCK_STOCKS[index];
-            if(!s) return;
-
-            document.getElementById('stock-detail-view').classList.remove('hidden');
-            
-            document.getElementById('detail-name').innerText = `${s.sym} - ${s.name}`;
-            document.getElementById('detail-price').innerText = s.simPrice;
-            
-            const changeEl = document.getElementById('detail-change');
-            changeEl.innerText = `${s.simChange} (${s.simPct})`;
-            changeEl.className = `text-sm font-mono mt-1 ${s.isPos ? 'text-emerald-400' : 'text-red-400'}`;
-
-            document.getElementById('detail-open').innerText = s.open.toFixed(2);
-            document.getElementById('detail-high').innerText = s.high.toFixed(2);
-            document.getElementById('detail-low').innerText = s.low.toFixed(2);
-            document.getElementById('detail-vol').innerText = s.vol;
-            
-            // Randomly determine if market is open based on LA time
-            const now = new Date();
-            const laTimeStr = now.toLocaleString("en-US", { timeZone: 'America/Los_Angeles' });
-            const laTime = new Date(laTimeStr);
-            const hour = laTime.getHours();
-            
-            const statusEl = document.getElementById('detail-status');
-            if(hour >= 6 && hour < 13) { // 6:30am - 1:00pm PST roughly
-                statusEl.innerHTML = `<span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> Market Open`;
-                statusEl.className = "inline-flex items-center gap-1.5 text-xs mt-2 px-2 py-1 rounded bg-[#1e1e1e] text-emerald-400 border border-[#2e2e2e]";
-            } else {
-                statusEl.innerHTML = `<span class="w-2 h-2 rounded-full bg-gray-500"></span> Market Closed`;
-                statusEl.className = "inline-flex items-center gap-1.5 text-xs mt-2 px-2 py-1 rounded bg-[#1e1e1e] text-gray-400 border border-[#2e2e2e]";
-            }
-        }
-
-        // --- 8. Explorations Tab ---
-        function initExplorations() {
-            // News Digest
-            const exNews = document.getElementById('explore-news');
-            let newsHtml = '';
-            const genNews = [
-                "Global markets rally as tech sector posts better than expected Q3 results.",
-                "Advancements in fusion energy suggest commercial viability by 2035.",
-                "SpaceX announces new timeline for crewed Mars mission, targeting 2029."
-            ];
-            genNews.forEach(n => {
-                newsHtml += `<div class="text-sm text-gray-300 leading-snug border-l-2 border-blue-500/50 pl-3">${n}</div>`;
-            });
-            if(exNews) exNews.innerHTML = newsHtml;
-
-            // Curiosity
-            const curTitle = document.getElementById('explore-curiosity-title');
-            const curDesc = document.getElementById('explore-curiosity-desc');
-            if(curTitle) curTitle.innerText = "The Overview Effect";
-            if(curDesc) curDesc.innerText = "A cognitive shift reported by some astronauts while viewing the Earth from space. Researchers have characterized the effect as 'a state of awe with self-transcendent qualities, precipitated by a particularly striking visual stimulus'.";
-
-            // Joke
-            const jokeEl = document.getElementById('explore-joke');
-            if(jokeEl) jokeEl.innerText = "Why do programmers prefer dark mode? \n\n Because light attracts bugs.";
-
-            // On This Day
-            const otdYear = document.getElementById('explore-otd-year');
-            const otdDesc = document.getElementById('explore-otd-desc');
-            if(otdYear) otdYear.innerText = "1879";
-            if(otdDesc) otdDesc.innerText = "Albert Einstein is born in Ulm, Germany. He would go on to develop the theory of relativity, one of the two pillars of modern physics.";
         }
 
         // --- Optimized Tick Loops ---
@@ -1190,7 +1095,6 @@
             const masterDateEl = document.getElementById('master-date');
             if (masterDateEl) masterDateEl.innerText = laDateStr;
 
-            // Update Master Analog Clock
             drawSquareChronograph('analogClock', laTime);
 
             LOCATIONS.forEach(loc => {
@@ -1208,7 +1112,6 @@
         initLifeGrid();
         initWorldClocks();
         initMarket();
-        initExplorations();
         loadKnowledge(); 
         
         tickAge();
