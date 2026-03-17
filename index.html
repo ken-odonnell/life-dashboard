@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Temporal Dashboard Pro v24</title>
+    <title>Temporal Dashboard Pro v26</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -91,7 +91,7 @@
         
         .action-btn:hover { background-color: rgba(255,255,255,0.05); }
 
-        /* Tabs Nav Indicator - Cleaned up to prevent layout break */
+        /* Tabs Nav Indicator */
         .nav-btn { position: relative; }
         .nav-btn.active::after {
             content: '';
@@ -120,6 +120,7 @@
         <button class="nav-btn active text-[9px] uppercase tracking-widest text-gray-400 hover:text-white transition-colors" onclick="switchTab('main', this)">Main</button>
         <button class="nav-btn text-[9px] uppercase tracking-widest text-gray-400 hover:text-white transition-colors" onclick="switchTab('fitness', this)">Fitness</button>
         <button class="nav-btn text-[9px] uppercase tracking-widest text-gray-400 hover:text-white transition-colors" onclick="switchTab('hotkeys', this)">Hotkeys</button>
+        <button class="nav-btn text-[9px] uppercase tracking-widest text-gray-400 hover:text-white transition-colors" onclick="switchTab('music', this)">Music</button>
     </div>
 
     <!-- ==================== TAB 1: MAIN DASHBOARD ==================== -->
@@ -262,7 +263,9 @@
             </div>
         </div>
 
-        <!-- 6. Advanced Weather (Matching height h-[350px]) -->
+        <!-- ================= BOTTOM ROW (All matching h-[350px]) ================= -->
+
+        <!-- 6. Advanced Weather (5 cols) -->
         <div class="card p-5 lg:col-span-5 flex flex-col justify-between h-[350px]">
             <div class="flex justify-between items-start mb-2">
                 <div class="flex items-center gap-3">
@@ -277,9 +280,11 @@
                     <div class="text-[9px] text-gray-600 font-mono">90046</div>
                 </div>
             </div>
+            
             <div class="w-full flex-1 relative min-h-[90px] mt-1 mb-2">
                 <canvas id="weatherChart"></canvas>
             </div>
+            
             <div class="w-full grid grid-cols-6 gap-2 text-center pt-2 border-t border-[#2e2e2e] mb-2">
                 <div class="flex flex-col justify-center"><div class="text-[8px] text-gray-500 uppercase">Rise</div><div id="sunrise" class="text-white text-[10px]">--:--</div></div>
                 <div class="flex flex-col justify-center border-l border-[#2e2e2e]"><div class="text-[8px] text-gray-500 uppercase">Set</div><div id="sunset" class="text-white text-[10px]">--:--</div></div>
@@ -288,22 +293,24 @@
                 <div class="flex flex-col justify-center border-l border-[#2e2e2e]"><div class="text-[8px] text-gray-500 uppercase">AQI</div><div id="aqi" class="text-white text-[10px]">--</div></div>
                 <div class="flex flex-col justify-center border-l border-[#2e2e2e]"><div class="text-[8px] text-gray-500 uppercase">Vis</div><div id="visibility" class="text-white text-[10px]">--</div></div>
             </div>
+
+            <!-- 7-Day Forecast Strip -->
             <div class="border-t border-[#2e2e2e] pt-2 mt-auto">
                 <div id="forecast-list" class="flex justify-between w-full"></div>
             </div>
         </div>
 
-        <!-- 7. Global Operations (Matching height h-[350px]) -->
+        <!-- 7. Global Operations (Ultra Compact - 3 cols) -->
         <div class="card p-5 lg:col-span-3 flex flex-col justify-between h-[350px]">
             <div class="flex items-center gap-2 mb-2 pb-2 border-b border-[#2e2e2e]">
-                <h3 class="text-gray-500 text-xs uppercase tracking-widest flex items-center gap-2"><i data-lucide="globe" class="w-4 h-4 text-blue-400"></i> Ops</h3>
+                <h3 class="text-gray-500 text-xs uppercase tracking-widest flex items-center gap-2"><i data-lucide="globe" class="w-4 h-4 text-blue-400"></i> Global Operations</h3>
             </div>
             <div class="flex flex-col flex-1 justify-center">
                 <div id="world-clocks-container" class="w-full grid grid-cols-2 gap-y-6 gap-x-2"></div>
             </div>
         </div>
 
-        <!-- 8. Market Sparklines (Matching height h-[350px]) -->
+        <!-- 8. Market Sparklines (Main Tab - 4 cols) -->
         <div class="card p-0 lg:col-span-4 flex flex-col h-[350px]">
             <div class="p-4 border-b border-[#2e2e2e] flex-shrink-0">
                 <h3 class="text-gray-500 text-xs uppercase tracking-widest flex items-center gap-2"><i data-lucide="trending-up" class="w-4 h-4 text-emerald-500"></i> Markets</h3>
@@ -313,33 +320,40 @@
     </div>
 
     <!-- ==================== TAB 2: FITNESS ==================== -->
-    <div id="tab-fitness" class="tab-content hidden max-w-7xl w-full dashboard-container">
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-[1px] w-full">
-            <div class="card p-6 flex flex-col h-[85vh] w-full">
-                <div class="mb-6 pt-2 pl-2">
-                    <div class="text-lg md:text-xl font-bold text-white mb-2 tracking-wide flex items-center gap-2">Target Marathon: <del class="text-gray-600">03:50:00</del> <span class="text-[#d97706]">03:10:00</span></div>
-                    <div class="border-l-2 border-white pl-4 text-xl font-serif text-gray-200">Train Like You Race, Race Like You Train</div>
-                </div>
-                <div class="w-full flex-1 relative rounded overflow-hidden border border-[#2e2e2e]">
-                    <iframe src="https://ken-odonnell.github.io/marathon-results/" class="w-full h-full border-0 absolute inset-0 bg-[#0f0f0f]"></iframe>
-                </div>
+    <div id="tab-fitness" class="tab-content hidden max-w-7xl w-full grid grid-cols-1 lg:grid-cols-2 dashboard-container">
+        <!-- Left: Marathon -->
+        <div class="card p-6 flex flex-col h-[92vh] w-full">
+            <div class="mb-6 pt-2 pl-2">
+                <div class="text-lg md:text-xl font-bold text-white mb-2 tracking-wide flex items-center gap-2">Target Marathon: <del class="text-gray-600">03:50:00</del> <span class="text-[#d97706]">03:10:00</span></div>
+                <div class="border-l-2 border-white pl-4 text-xl font-serif text-gray-200">Train Like You Race, Race Like You Train</div>
             </div>
-            <div class="card p-6 flex flex-col h-[85vh] w-full">
-                <div class="mb-6 pt-2 pl-2"><div class="text-lg md:text-xl font-bold text-white mb-2 tracking-wide">Workout App</div><div class="border-l-2 border-white pl-4 text-sm font-serif text-gray-400">Active Training</div></div>
-                <div class="w-full flex-1 relative rounded overflow-hidden border border-[#2e2e2e]">
-                    <iframe src="https://ken-odonnell.github.io/workout-app/" class="w-full h-full border-0 absolute inset-0 bg-[#0f0f0f]"></iframe>
-                </div>
+            <div class="w-full flex-1 relative rounded overflow-hidden border border-[#2e2e2e]">
+                <iframe src="https://ken-odonnell.github.io/marathon-results/" class="w-full h-full border-0 absolute inset-0 bg-[#0f0f0f]"></iframe>
+            </div>
+        </div>
+
+        <!-- Right: Workout App -->
+        <div class="card p-6 flex flex-col h-[92vh] w-full">
+            <div class="mb-6 pt-2 pl-2"><div class="text-lg md:text-xl font-bold text-white mb-2 tracking-wide">Workout App</div><div class="border-l-2 border-white pl-4 text-sm font-serif text-gray-400">Active Training</div></div>
+            <div class="w-full flex-1 relative rounded overflow-hidden border border-[#2e2e2e]">
+                <iframe src="https://ken-odonnell.github.io/workout-app/" class="w-full h-full border-0 absolute inset-0 bg-[#0f0f0f]"></iframe>
             </div>
         </div>
     </div>
 
     <!-- ==================== TAB 3: HOTKEYS ==================== -->
-    <div id="tab-hotkeys" class="tab-content hidden max-w-7xl w-full dashboard-container">
-        <div class="card p-6 flex flex-col h-[85vh] w-full">
-            <div class="mb-6 pt-2 pl-2"><div class="text-lg font-bold text-white mb-2 tracking-wide">Hotkey Master</div></div>
-            <div class="w-full flex-1 relative rounded overflow-hidden border border-[#2e2e2e]">
-                <iframe src="https://ken-odonnell.github.io/hotkey-master/" class="w-full h-full border-0 absolute inset-0 bg-[#0f0f0f]"></iframe>
-            </div>
+    <div id="tab-hotkeys" class="tab-content hidden max-w-7xl w-full grid grid-cols-1 dashboard-container">
+        <!-- Border-0 and P-0 to make the GUI fully flush with edges -->
+        <div class="card p-0 flex flex-col h-[92vh] w-full border-0">
+            <iframe src="https://ken-odonnell.github.io/hotkey-master/" class="w-full h-full border-0 bg-[#0f0f0f]"></iframe>
+        </div>
+    </div>
+
+    <!-- ==================== TAB 4: MUSIC ==================== -->
+    <div id="tab-music" class="tab-content hidden max-w-7xl w-full grid grid-cols-1 dashboard-container">
+        <!-- Border-0 and P-0 to make the GUI fully flush with edges -->
+        <div class="card p-0 flex flex-col h-[92vh] w-full border-0">
+            <iframe src="https://ken-odonnell.github.io/music-theory/" class="w-full h-full border-0 bg-[#0f0f0f]"></iframe>
         </div>
     </div>
 
@@ -348,15 +362,29 @@
         const BIRTH_DATE = new Date('1995-04-30T00:00:00');
         const LIFE_EXPECTANCY_YEARS = 75;
         const LOCATIONS = [
-            { name: "New York", zone: "America/New_York", id: "ny" }, { name: "London", zone: "Europe/London", id: "london" },
-            { name: "Berlin", zone: "Europe/Berlin", id: "berlin" }, { name: "Tel Aviv", zone: "Asia/Jerusalem", id: "telaviv" },
-            { name: "Dubai", zone: "Asia/Dubai", id: "dubai" }, { name: "Manila", zone: "Asia/Manila", id: "manila" },
+            { name: "New York", zone: "America/New_York", id: "ny" }, 
+            { name: "London", zone: "Europe/London", id: "london" },
+            { name: "Berlin", zone: "Europe/Berlin", id: "berlin" }, 
+            { name: "Tel Aviv", zone: "Asia/Jerusalem", id: "telaviv" },
+            { name: "Dubai", zone: "Asia/Dubai", id: "dubai" }, 
+            { name: "Manila", zone: "Asia/Manila", id: "manila" },
+            { name: "Tokyo", zone: "Asia/Tokyo", id: "tokyo" },
+            { name: "Moscow", zone: "Europe/Moscow", id: "moscow" }
         ];
 
+        // Ensure clean tab switching by strictly utilizing Tailwind's utility classes
         function switchTab(tabId, btnElement) {
-            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            // Add 'hidden' back to all content wrappers, and remove any lingering inline styles
+            document.querySelectorAll('.tab-content').forEach(el => {
+                el.classList.add('hidden');
+                el.style.display = ''; 
+            });
             document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active', 'text-white'));
-            document.getElementById('tab-' + tabId).classList.remove('hidden');
+            
+            // Un-hide targeted wrapper
+            const target = document.getElementById('tab-' + tabId);
+            target.classList.remove('hidden');
+            
             btnElement.classList.add('active', 'text-white');
         }
 
@@ -438,35 +466,86 @@
             if (yearGrid) yearGrid.innerHTML = yearHtml;
         }
 
+        function drawSubDial(ctx, cx, cy, r, angle, color) {
+            ctx.beginPath(); 
+            ctx.arc(cx, cy, r, 0, Math.PI*2);
+            ctx.fillStyle = "#161616";
+            ctx.fill();
+            ctx.strokeStyle = "#2a2a2a"; 
+            ctx.lineWidth = 1;
+            ctx.stroke();
+
+            ctx.beginPath();
+            ctx.moveTo(cx, cy - r + 2); ctx.lineTo(cx, cy + r - 2);
+            ctx.moveTo(cx - r + 2, cy); ctx.lineTo(cx + r - 2, cy);
+            ctx.strokeStyle = "#222";
+            ctx.stroke();
+
+            ctx.beginPath();
+            ctx.moveTo(cx, cy);
+            ctx.lineTo(cx + Math.cos(angle - Math.PI/2)*r*0.8, cy + Math.sin(angle - Math.PI/2)*r*0.8);
+            ctx.strokeStyle = color; 
+            ctx.lineWidth = 1.5; 
+            ctx.lineCap = "round";
+            ctx.stroke();
+
+            ctx.beginPath(); ctx.arc(cx, cy, 1.5, 0, Math.PI*2); ctx.fillStyle = "#eee"; ctx.fill();
+        }
+
         function drawSquareChronograph(canvasId, timeDate) {
             const canvas = document.getElementById(canvasId); if(!canvas) return;
             const ctx = canvas.getContext("2d"); const w = canvas.width, h = canvas.height, cx = w / 2, cy = h / 2, r = Math.min(cx, cy) * 0.85;
             ctx.clearRect(0, 0, w, h); ctx.save(); ctx.translate(cx, cy);
+            
+            // Bezel
             ctx.fillStyle = "#1e1e1e"; ctx.strokeStyle = "#3a3a3a"; ctx.lineWidth = 2; ctx.beginPath();
             if (ctx.roundRect) ctx.roundRect(-cx*0.95, -cy*0.95, w*0.95, h*0.95, 12); else ctx.rect(-cx*0.95, -cy*0.95, w*0.95, h*0.95);
             ctx.fill(); ctx.stroke();
+            
+            // Screws
             ctx.fillStyle = "#4a4a4a";
             [[-cx*0.75,-cy*0.75],[cx*0.75,-cy*0.75],[-cx*0.75,cy*0.75],[cx*0.75,cy*0.75]].forEach(p => {
                 ctx.beginPath(); ctx.arc(p[0], p[1], 3, 0, Math.PI*2); ctx.fill();
+                ctx.strokeStyle = "#111"; ctx.lineWidth = 1; ctx.beginPath();
+                ctx.moveTo(p[0] - 2, p[1] - 2); ctx.lineTo(p[0] + 2, p[1] + 2); ctx.stroke();
             });
+            
+            // Inner Face
             ctx.fillStyle = "#191919"; ctx.beginPath(); ctx.arc(0, 0, r, 0, Math.PI*2); ctx.fill(); ctx.strokeStyle = "#333"; ctx.stroke();
+            
+            // Ticks
             for(let i=0; i<60; i++){
                 const angle = (i * Math.PI / 30) - Math.PI/2;
                 ctx.beginPath(); ctx.moveTo(Math.cos(angle)*(i%5===0?r*0.85:r*0.92), Math.sin(angle)*(i%5===0?r*0.85:r*0.92)); ctx.lineTo(Math.cos(angle)*r, Math.sin(angle)*r);
                 ctx.strokeStyle = i%5===0 ? "#9ca3af" : "#4b5563"; ctx.lineWidth = i%5===0 ? 2.5 : 1; ctx.stroke();
             }
+
+            // Sub-dials (Monochrome style)
+            const subR = r * 0.26;
+            const hour24 = timeDate.getHours() + (timeDate.getMinutes()/60);
+            drawSubDial(ctx, -r*0.45, 0, subR, (hour24 / 24) * Math.PI*2, "#a3a3a3"); // Left
+            const monthVal = timeDate.getMonth() + (timeDate.getDate()/31);
+            drawSubDial(ctx, r*0.45, 0, subR, (monthVal / 12) * Math.PI*2, "#a3a3a3"); // Right
+            let dayVal = timeDate.getDay() + (timeDate.getHours()/24);
+            drawSubDial(ctx, 0, r*0.45, subR, (dayVal / 7) * Math.PI*2, "#a3a3a3"); // Bottom
+
+            // Main Hands
             const hr = timeDate.getHours(), min = timeDate.getMinutes(), sec = timeDate.getSeconds();
             const hRad = (hr % 12)*Math.PI/6 + min*Math.PI/(6*60), mRad = min*Math.PI/30, sRad = sec*Math.PI/30;
-            ctx.lineWidth = 4; ctx.strokeStyle = "#e2e8f0"; ctx.beginPath(); ctx.moveTo(0,0); ctx.lineTo(Math.cos(hRad-Math.PI/2)*r*0.5, Math.sin(hRad-Math.PI/2)*r*0.5); ctx.stroke();
+            
+            ctx.lineWidth = 4; ctx.lineCap = "round"; ctx.strokeStyle = "#e2e8f0"; ctx.beginPath(); ctx.moveTo(0,0); ctx.lineTo(Math.cos(hRad-Math.PI/2)*r*0.5, Math.sin(hRad-Math.PI/2)*r*0.5); ctx.stroke();
             ctx.lineWidth = 2.5; ctx.strokeStyle = "#94a3b8"; ctx.beginPath(); ctx.moveTo(0,0); ctx.lineTo(Math.cos(mRad-Math.PI/2)*r*0.75, Math.sin(mRad-Math.PI/2)*r*0.75); ctx.stroke();
-            ctx.lineWidth = 1.5; ctx.strokeStyle = "#e2e8f0"; ctx.beginPath(); ctx.moveTo(0,0); ctx.lineTo(Math.cos(sRad-Math.PI/2)*r*0.85, Math.sin(sRad-Math.PI/2)*r*0.85); ctx.stroke();
-            ctx.beginPath(); ctx.arc(0,0, 3, 0, Math.PI*2); ctx.fillStyle = "#e2e8f0"; ctx.fill(); ctx.restore();
+            ctx.lineWidth = 1.5; ctx.strokeStyle = "#e2e8f0"; ctx.beginPath(); ctx.moveTo(Math.cos(sRad+Math.PI/2)*r*0.15, Math.sin(sRad+Math.PI/2)*r*0.15); ctx.lineTo(Math.cos(sRad-Math.PI/2)*r*0.85, Math.sin(sRad-Math.PI/2)*r*0.85); ctx.stroke();
+            
+            ctx.beginPath(); ctx.arc(0,0, 3.5, 0, Math.PI*2); ctx.fillStyle = "#e2e8f0"; ctx.fill();
+            ctx.beginPath(); ctx.arc(0,0, 1.5, 0, Math.PI*2); ctx.fillStyle = "#1e1e1e"; ctx.fill(); 
+            ctx.restore();
         }
 
         function initWorldClocks() {
             const container = document.getElementById('world-clocks-container');
             let html = '';
-            LOCATIONS.forEach(loc => html += `<div class="flex flex-col items-center justify-center"><span class="text-[9px] text-gray-500 uppercase tracking-widest">${loc.name}</span><span id="digital-${loc.id}" class="font-mono text-xl text-white font-bold">--:--</span></div>`);
+            LOCATIONS.forEach(loc => html += `<div class="flex flex-col items-center justify-center p-1 rounded-lg"><span class="text-[9px] text-gray-500 uppercase tracking-widest mb-0.5 truncate leading-none w-full text-center">${loc.name}</span><span id="digital-${loc.id}" class="font-mono text-xl md:text-2xl text-white font-bold leading-none mt-0.5">--:--</span></div>`);
             if (container) container.innerHTML = html;
         }
 
@@ -492,21 +571,39 @@
         }
 
         let weatherChartInst = null;
+        
+        // Full weather codes mapping
+        const weatherCodes = {
+            0: {d:'Clear', i:'sun'}, 1: {d:'Mainly Clear', i:'sun'}, 2: {d:'Partly Cloudy', i:'cloud-sun'}, 
+            3: {d:'Overcast', i:'cloud'}, 45: {d:'Fog', i:'cloud-fog'}, 48: {d:'Fog', i:'cloud-fog'}, 
+            51: {d:'Drizzle', i:'cloud-drizzle'}, 53: {d:'Drizzle', i:'cloud-drizzle'}, 55: {d:'Drizzle', i:'cloud-drizzle'},
+            61: {d:'Rain', i:'cloud-rain'}, 63: {d:'Rain', i:'cloud-rain'}, 65: {d:'Rain', i:'cloud-rain'}, 
+            80: {d:'Showers', i:'cloud-rain'}, 81: {d:'Showers', i:'cloud-rain'}, 82: {d:'Showers', i:'cloud-rain'},
+            95: {d:'Thunderstorm', i:'cloud-lightning'}, 96: {d:'Thunderstorm', i:'cloud-lightning'}, 99: {d:'Thunderstorm', i:'cloud-lightning'}
+        };
+        function getWeatherInfo(code) { return weatherCodes[code] || {d:'Unknown', i:'cloud'}; }
+
         async function fetchWeather() {
             try {
+                // Zip code 90046 Coordinates
                 const [weatherRes, airRes] = await Promise.all([
                     fetch('https://api.open-meteo.com/v1/forecast?latitude=34.0980&longitude=-118.3625&current=temperature_2m,relative_humidity_2m,apparent_temperature,weather_code,wind_speed_10m&hourly=temperature_2m&daily=weather_code,temperature_2m_max,temperature_2m_min,uv_index_max,sunrise,sunset&temperature_unit=fahrenheit&wind_speed_unit=mph&timezone=America%2FLos_Angeles'),
                     fetch('https://air-quality-api.open-meteo.com/v1/air-quality?latitude=34.0980&longitude=-118.3625&current=us_aqi')
                 ]);
                 const data = await weatherRes.json(), airData = await airRes.json();
+                
+                const currentInfo = getWeatherInfo(data.current.weather_code);
+                
                 document.getElementById('current-temp').innerText = Math.round(data.current.temperature_2m) + "°";
                 document.getElementById('feels-like').innerText = Math.round(data.current.apparent_temperature) + "°";
+                document.getElementById('current-desc').innerText = currentInfo.d;
                 document.getElementById('wind-speed').innerText = Math.round(data.current.wind_speed_10m) + 'mph';
                 document.getElementById('uv-index').innerText = data.daily.uv_index_max[0];
                 document.getElementById('aqi').innerText = airData.current.us_aqi;
                 document.getElementById('visibility').innerText = "10+ mi"; 
                 document.getElementById('sunrise').innerText = new Date(data.daily.sunrise[0]).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit', hour12: false});
                 document.getElementById('sunset').innerText = new Date(data.daily.sunset[0]).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit', hour12: false});
+                
                 updateChart(data.hourly);
                 updateForecastList(data.daily);
             } catch (e) { console.error("Weather Error", e); }
@@ -518,13 +615,64 @@
             let labels = [], temps = [], curIdx = -1;
             for(let i=0; i<hourly.time.length; i++) {
                 if(hourly.time[i].startsWith(todayStr)) {
-                    const t = new Date(hourly.time[i]); labels.push(t.toLocaleTimeString('en-US', {hour12: false, hour: '2-digit'}) + ":00");
+                    const t = new Date(hourly.time[i]); 
+                    labels.push(t.toLocaleTimeString('en-US', {hour12: false, hour: '2-digit'}) + ":00");
                     temps.push(hourly.temperature_2m[i]); if (t.getHours() === now.getHours()) curIdx = labels.length - 1;
                 }
             }
             if (weatherChartInst) weatherChartInst.destroy();
-            const grad = ctx.getContext('2d').createLinearGradient(0, 0, 0, 100); grad.addColorStop(0, 'rgba(250, 204, 21, 0.4)'); grad.addColorStop(1, 'rgba(250, 204, 21, 0)');
-            weatherChartInst = new Chart(ctx, { type: 'line', data: { labels: labels, datasets: [{ data: temps, backgroundColor: grad, borderWidth: 3, fill: true, tension: 0.4, pointRadius: (c) => c.dataIndex === curIdx ? 6 : 0, pointBackgroundColor: '#fff', segment: { borderDash: c => c.p0DataIndex < curIdx ? [5, 5] : undefined, borderColor: c => c.p0DataIndex < curIdx ? 'rgba(250, 204, 21, 0.4)' : '#facc15' } }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { display: true, ticks: { color: '#6b7280', maxTicksLimit: 6, font: {size: 10} }, grid: { display: false } }, y: { display: false, min: Math.min(...temps) - 5 } } } });
+            const grad = ctx.getContext('2d').createLinearGradient(0, 0, 0, 100); 
+            grad.addColorStop(0, 'rgba(250, 204, 21, 0.4)'); 
+            grad.addColorStop(1, 'rgba(250, 204, 21, 0)');
+            
+            weatherChartInst = new Chart(ctx, { 
+                type: 'line', 
+                data: { 
+                    labels: labels, 
+                    datasets: [{ 
+                        data: temps, 
+                        backgroundColor: grad, 
+                        borderWidth: 3, 
+                        fill: true, 
+                        tension: 0.4, 
+                        pointRadius: (c) => c.dataIndex === curIdx ? 6 : 0, 
+                        pointBackgroundColor: '#fff', 
+                        segment: { 
+                            borderDash: c => c.p0DataIndex < curIdx ? [5, 5] : undefined, 
+                            borderColor: c => c.p0DataIndex < curIdx ? 'rgba(250, 204, 21, 0.4)' : '#facc15' 
+                        } 
+                    }] 
+                }, 
+                options: { 
+                    responsive: true, 
+                    maintainAspectRatio: false, 
+                    interaction: { mode: 'index', intersect: false },
+                    plugins: { 
+                        legend: { display: false },
+                        tooltip: { 
+                            enabled: true,
+                            mode: 'index',
+                            intersect: false,
+                            backgroundColor: 'rgba(25, 25, 25, 0.95)',
+                            titleFont: { size: 14, family: 'Inter', weight: 'normal' },
+                            titleColor: '#9ca3af',
+                            bodyFont: { size: 32, weight: 'bold', family: 'Inter' },
+                            padding: 16,
+                            displayColors: false,
+                            borderColor: '#2e2e2e',
+                            borderWidth: 1,
+                            callbacks: {
+                                title: function(context) { return context[0].label; },
+                                label: function(context) { return context.parsed.y + '°'; }
+                            }
+                        }
+                    }, 
+                    scales: { 
+                        x: { display: true, ticks: { color: '#6b7280', maxTicksLimit: 6, font: {size: 10} }, grid: { display: false } }, 
+                        y: { display: false, min: Math.min(...temps) - 5 } 
+                    } 
+                } 
+            });
         }
 
         function updateForecastList(daily) {
@@ -532,9 +680,11 @@
             const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']; let html = '';
             for(let i=0; i<7; i++) {
                 const dateParts = daily.time[i].split('-'); const d = new Date(dateParts[0], dateParts[1]-1, dateParts[2]);
-                html += `<div class="flex flex-col items-center flex-1"><span class="text-[10px] text-gray-500 uppercase">${i===0?'Now':days[d.getDay()]}</span><span class="text-xs font-bold text-white">${Math.round(daily.temperature_2m_max[i])}°</span></div>`;
+                const info = getWeatherInfo(daily.weather_code[i]);
+                html += `<div class="flex flex-col items-center flex-1"><span class="text-[10px] text-gray-500 uppercase">${i===0?'Now':days[d.getDay()]}</span><i data-lucide="${info.i}" class="w-5 h-5 text-gray-300 my-1"></i><span class="text-xs font-bold text-white">${Math.round(daily.temperature_2m_max[i])}°</span></div>`;
             }
             container.innerHTML = html;
+            lucide.createIcons();
         }
 
         const MOCK_STOCKS = [ { sym: "VOO", base: 472 }, { sym: "TSM", base: 141 }, { sym: "NVDA", base: 885 }, { sym: "SWPPX", base: 79 }, { sym: "SCHD", base: 78 }, { sym: "SFSNX", base: 15 } ];
