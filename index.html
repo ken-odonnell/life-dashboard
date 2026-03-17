@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Temporal Dashboard Pro v26</title>
+    <title>Temporal Dashboard Pro v27</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -320,24 +320,42 @@
     </div>
 
     <!-- ==================== TAB 2: FITNESS ==================== -->
-    <div id="tab-fitness" class="tab-content hidden max-w-7xl w-full grid grid-cols-1 lg:grid-cols-2 dashboard-container">
-        <!-- Left: Marathon -->
-        <div class="card p-6 flex flex-col h-[92vh] w-full">
-            <div class="mb-6 pt-2 pl-2">
-                <div class="text-lg md:text-xl font-bold text-white mb-2 tracking-wide flex items-center gap-2">Target Marathon: <del class="text-gray-600">03:50:00</del> <span class="text-[#d97706]">03:10:00</span></div>
-                <div class="border-l-2 border-white pl-4 text-xl font-serif text-gray-200">Train Like You Race, Race Like You Train</div>
-            </div>
-            <div class="w-full flex-1 relative rounded overflow-hidden border border-[#2e2e2e]">
-                <iframe src="https://ken-odonnell.github.io/marathon-results/" class="w-full h-full border-0 absolute inset-0 bg-[#0f0f0f]"></iframe>
-            </div>
-        </div>
+    <div id="tab-fitness" class="tab-content hidden max-w-7xl w-full dashboard-container">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-[1px] w-full">
+            
+            <!-- Left Column: Marathon & Distance Converter -->
+            <div class="flex flex-col gap-[1px] h-[92vh] w-full">
+                <!-- Top: Marathon -->
+                <div class="card p-6 flex flex-col min-h-0" style="flex: 1.8;">
+                    <div class="mb-4 pt-2 pl-2">
+                        <div class="text-lg md:text-xl font-bold text-white mb-2 tracking-wide flex items-center gap-2">Target Marathon: <del class="text-gray-600">03:50:00</del> <span class="text-[#d97706]">03:10:00</span></div>
+                        <div class="border-l-2 border-white pl-4 text-xl font-serif text-gray-200">Train Like You Race, Race Like You Train</div>
+                    </div>
+                    <div class="w-full flex-1 relative rounded overflow-hidden border border-[#2e2e2e]">
+                        <iframe src="https://ken-odonnell.github.io/marathon-results/" class="w-full h-full border-0 absolute inset-0 bg-[#0f0f0f]"></iframe>
+                    </div>
+                </div>
 
-        <!-- Right: Workout App -->
-        <div class="card p-6 flex flex-col h-[92vh] w-full">
-            <div class="mb-6 pt-2 pl-2"><div class="text-lg md:text-xl font-bold text-white mb-2 tracking-wide">Workout App</div><div class="border-l-2 border-white pl-4 text-sm font-serif text-gray-400">Active Training</div></div>
-            <div class="w-full flex-1 relative rounded overflow-hidden border border-[#2e2e2e]">
-                <iframe src="https://ken-odonnell.github.io/workout-app/" class="w-full h-full border-0 absolute inset-0 bg-[#0f0f0f]"></iframe>
+                <!-- Bottom: Distance Converter -->
+                <div class="card p-6 flex flex-col min-h-0" style="flex: 1.2;">
+                    <div class="mb-4 pt-2 pl-2">
+                        <div class="text-lg md:text-xl font-bold text-white mb-2 tracking-wide flex items-center gap-2">Distance Converter</div>
+                        <div class="border-l-2 border-white pl-4 text-sm font-serif text-gray-400">Pace & Distance Utility</div>
+                    </div>
+                    <div class="w-full flex-1 relative rounded overflow-hidden border border-[#2e2e2e]">
+                        <iframe src="https://ken-odonnell.github.io/distance-converter/" class="w-full h-full border-0 absolute inset-0 bg-[#0f0f0f]"></iframe>
+                    </div>
+                </div>
             </div>
+
+            <!-- Right: Workout App -->
+            <div class="card p-6 flex flex-col h-[92vh] w-full">
+                <div class="mb-6 pt-2 pl-2"><div class="text-lg md:text-xl font-bold text-white mb-2 tracking-wide">Workout App</div><div class="border-l-2 border-white pl-4 text-sm font-serif text-gray-400">Active Training</div></div>
+                <div class="w-full flex-1 relative rounded overflow-hidden border border-[#2e2e2e]">
+                    <iframe src="https://ken-odonnell.github.io/workout-app/" class="w-full h-full border-0 absolute inset-0 bg-[#0f0f0f]"></iframe>
+                </div>
+            </div>
+
         </div>
     </div>
 
