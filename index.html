@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Temporal Dashboard Pro v27</title>
+    <title>Temporal Dashboard Pro v28</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -69,17 +69,24 @@
         .life-dot.past { background-color: #10b981; }
         .life-dot.active { background-color: #fff; box-shadow: 0 0 4px #fff; }
         
-        /* Daily Grind */
+        /* Daily Grind - 11 columns (09:00 - 20:00), Bottom to Up, Left to Right */
         .grind-grid {
             display: grid;
-            grid-template-columns: repeat(13, 1fr);
+            grid-template-columns: repeat(11, 1fr);
+            grid-template-rows: repeat(4, 1fr);
+            grid-auto-flow: column;
             gap: 4px;
             margin-top: 6px;
+            /* Flips container upside down so filling starts from bottom */
+            transform: scaleY(-1); 
         }
         .grind-dot {
             height: 28px;
             background-color: #2d3748;
             width: 100%;
+            /* Flips dot back upright */
+            transform: scaleY(-1);
+            border-radius: 3px;
         }
         .grind-dot.past { background-color: var(--grind-color); }
         .grind-dot.active { background-color: #fff; box-shadow: 0 0 6px var(--grind-color); }
@@ -111,16 +118,29 @@
             0% { opacity: 0; transform: translateY(8px); }
             100% { opacity: 1; transform: translateY(0); }
         }
+
+        /* Schedule Tracker Progress */
+        .progress-bar {
+            transition: width 1s linear;
+        }
     </style>
 </head>
 <body class="min-h-screen p-0 md:p-4 lg:p-6 flex flex-col items-center">
 
     <!-- Tiny Hidden Navigation -->
     <div class="w-full max-w-7xl flex justify-end gap-4 mb-2 px-2 opacity-20 hover:opacity-100 transition-opacity duration-300 z-50">
-        <button class="nav-btn active text-[9px] uppercase tracking-widest text-gray-400 hover:text-white transition-colors" onclick="switchTab('main', this)">Main</button>
-        <button class="nav-btn text-[9px] uppercase tracking-widest text-gray-400 hover:text-white transition-colors" onclick="switchTab('fitness', this)">Fitness</button>
-        <button class="nav-btn text-[9px] uppercase tracking-widest text-gray-400 hover:text-white transition-colors" onclick="switchTab('hotkeys', this)">Hotkeys</button>
-        <button class="nav-btn text-[9px] uppercase tracking-widest text-gray-400 hover:text-white transition-colors" onclick="switchTab('music', this)">Music</button>
+        <button class="nav-btn active text-[9px] uppercase tracking-widest text-gray-400 hover:text-white transition-colors flex items-center gap-1.5" onclick="switchTab('main', this)">
+            <i data-lucide="layout-dashboard" class="w-3 h-3"></i> Main
+        </button>
+        <button class="nav-btn text-[9px] uppercase tracking-widest text-gray-400 hover:text-white transition-colors flex items-center gap-1.5" onclick="switchTab('fitness', this)">
+            <i data-lucide="activity" class="w-3 h-3"></i> Fitness
+        </button>
+        <button class="nav-btn text-[9px] uppercase tracking-widest text-gray-400 hover:text-white transition-colors flex items-center gap-1.5" onclick="switchTab('hotkeys', this)">
+            <i data-lucide="keyboard" class="w-3 h-3"></i> Hotkeys
+        </button>
+        <button class="nav-btn text-[9px] uppercase tracking-widest text-gray-400 hover:text-white transition-colors flex items-center gap-1.5" onclick="switchTab('music', this)">
+            <i data-lucide="music" class="w-3 h-3"></i> Music
+        </button>
     </div>
 
     <!-- ==================== TAB 1: MAIN DASHBOARD ==================== -->
@@ -227,7 +247,7 @@
         <div class="card p-5 lg:col-span-4 flex flex-col justify-between">
             <div>
                 <h3 class="text-gray-500 text-xs uppercase tracking-widest mb-2 flex items-center gap-2">
-                    <i data-lucide="briefcase" class="w-4 h-4 text-blue-500"></i> Daily Grind (07:00 - 20:00)
+                    <i data-lucide="briefcase" class="w-4 h-4 text-blue-500"></i> Daily Grind (09:00 - 20:00)
                 </h3>
                 <div class="flex justify-between items-baseline mb-1">
                     <span id="work-percentage" class="text-xl font-bold text-white">0%</span>
@@ -235,9 +255,9 @@
                 </div>
             </div>
             <div class="flex flex-col gap-1 mt-auto">
-                <div id="grind-grid-container" class="grind-grid"></div>
+                <div id="grind-grid-container" class="grind-grid w-full"></div>
                 <div class="flex justify-between text-[9px] text-gray-600 font-mono mt-1">
-                    <span>07:00</span>
+                    <span>09:00</span>
                     <span class="text-center">1 block = 15m</span>
                     <span>20:00</span>
                 </div>
@@ -300,13 +320,68 @@
             </div>
         </div>
 
-        <!-- 7. Global Operations (Ultra Compact - 3 cols) -->
+        <!-- 7. Global Ops / Schedule Tracker Toggle (3 cols) -->
         <div class="card p-5 lg:col-span-3 flex flex-col justify-between h-[350px]">
-            <div class="flex items-center gap-2 mb-2 pb-2 border-b border-[#2e2e2e]">
-                <h3 class="text-gray-500 text-xs uppercase tracking-widest flex items-center gap-2"><i data-lucide="globe" class="w-4 h-4 text-blue-400"></i> Global Operations</h3>
+            <div class="flex items-center justify-between mb-2 pb-2 border-b border-[#2e2e2e]">
+                <h3 class="text-gray-500 text-xs uppercase tracking-widest flex items-center gap-2">
+                    <i id="ops-icon" data-lucide="calendar-clock" class="w-4 h-4 text-blue-400"></i> <span id="ops-title">Schedule Tracker</span>
+                </h3>
+                <button onclick="toggleOps()" class="text-gray-500 hover:text-white transition-colors" title="Toggle View">
+                    <i data-lucide="arrow-right-left" class="w-3 h-3"></i>
+                </button>
             </div>
-            <div class="flex flex-col flex-1 justify-center">
-                <div id="world-clocks-container" class="w-full grid grid-cols-2 gap-y-6 gap-x-2"></div>
+            
+            <div class="flex flex-col flex-1 justify-center relative overflow-hidden">
+                
+                <!-- VIEW 1: Schedule Tracker -->
+                <div id="schedule-tracker-wrapper" class="flex flex-col w-full h-full absolute inset-0">
+                    <div class="flex justify-between items-end mb-4">
+                        <div>
+                            <div class="text-[10px] font-bold text-blue-400 uppercase tracking-widest mb-1 flex items-center gap-1" id="st-date-display">OCT 24</div>
+                            <h1 id="st-day-display" class="text-xl font-medium tracking-tight text-white">Monday</h1>
+                        </div>
+                        <span id="st-clock-display" class="text-sm font-mono text-gray-400 mb-0.5">12:00</span>
+                    </div>
+
+                    <div id="st-weekday-view" class="flex flex-col flex-1 w-full opacity-100 transition-opacity duration-300 gap-3">
+                        <div class="relative rounded border border-[#2e2e2e] bg-[#1e1e1e] overflow-hidden flex flex-col justify-center p-4 flex-1">
+                            <div id="st-progress-bar" class="progress-bar absolute top-0 left-0 h-full bg-[#1e3a47] z-0" style="width: 0%;"></div>
+                            <div class="relative z-10 flex flex-col h-full justify-center">
+                                <div class="flex justify-between items-center mb-2">
+                                    <div id="st-current-time-range" class="text-blue-400 text-[10px] font-bold tracking-widest uppercase">09:00 – 13:30</div>
+                                    <div class="text-[10px] font-mono text-blue-400" id="st-progress-text">0%</div>
+                                </div>
+                                <div id="st-current-title" class="text-sm font-medium leading-snug text-white line-clamp-3">Work Block 1</div>
+                            </div>
+                        </div>
+                        <div class="rounded border border-[#2e2e2e] p-3 flex flex-col justify-center mt-1">
+                            <div class="text-[9px] uppercase tracking-widest text-blue-400 mb-1.5 font-bold flex items-center gap-1.5">
+                                <i data-lucide="arrow-right" class="w-3 h-3"></i> Up Next
+                            </div>
+                            <div id="st-next-title" class="text-xs font-normal text-gray-400 truncate leading-tight mb-1">Lunch</div>
+                            <div id="st-next-time-range" class="text-[9px] text-gray-500 font-mono">13:30 – 14:15</div>
+                        </div>
+                    </div>
+
+                    <div id="st-weekend-view" class="hidden flex-col items-center justify-center flex-1 w-full text-center">
+                        <div class="text-blue-400 mb-3"><i data-lucide="battery-charging" class="w-6 h-6"></i></div>
+                        <h2 class="text-sm font-medium text-gray-300 mb-1 uppercase tracking-widest">Weekend Mode</h2>
+                        <p class="text-[10px] text-gray-500 mb-4 px-2">System idle. Recharging until Monday.</p>
+                        <div class="border border-[#2e2e2e] bg-[#1e1e1e] rounded p-3 w-full text-left mt-auto">
+                            <div class="text-[9px] text-blue-400 uppercase font-bold tracking-widest mb-1.5">Resuming Monday</div>
+                            <div class="flex justify-between items-baseline">
+                                <div class="text-xs font-medium text-gray-300">5:00 AM</div>
+                                <div class="text-[9px] text-gray-500 truncate ml-2 max-w-[140px]">Wake up, hydration...</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- VIEW 2: World Clocks -->
+                <div id="world-clocks-wrapper" class="hidden flex-col w-full h-full absolute inset-0 justify-center">
+                    <div id="world-clocks-container" class="w-full grid grid-cols-2 gap-y-6 gap-x-2"></div>
+                </div>
+
             </div>
         </div>
 
@@ -390,20 +465,44 @@
             { name: "Moscow", zone: "Europe/Moscow", id: "moscow" }
         ];
 
-        // Ensure clean tab switching by strictly utilizing Tailwind's utility classes
+        // --- Tabs & Toggles Logic ---
         function switchTab(tabId, btnElement) {
-            // Add 'hidden' back to all content wrappers, and remove any lingering inline styles
             document.querySelectorAll('.tab-content').forEach(el => {
                 el.classList.add('hidden');
                 el.style.display = ''; 
             });
             document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active', 'text-white'));
             
-            // Un-hide targeted wrapper
             const target = document.getElementById('tab-' + tabId);
             target.classList.remove('hidden');
             
             btnElement.classList.add('active', 'text-white');
+        }
+
+        let showingSchedule = true;
+        function toggleOps() {
+            showingSchedule = !showingSchedule;
+            const schWrapper = document.getElementById('schedule-tracker-wrapper');
+            const clkWrapper = document.getElementById('world-clocks-wrapper');
+            const title = document.getElementById('ops-title');
+            const icon = document.getElementById('ops-icon');
+
+            if (showingSchedule) {
+                schWrapper.classList.remove('hidden');
+                schWrapper.classList.add('flex');
+                clkWrapper.classList.add('hidden');
+                clkWrapper.classList.remove('flex');
+                title.innerText = 'Schedule Tracker';
+                icon.setAttribute('data-lucide', 'calendar-clock');
+            } else {
+                schWrapper.classList.add('hidden');
+                schWrapper.classList.remove('flex');
+                clkWrapper.classList.remove('hidden');
+                clkWrapper.classList.add('flex');
+                title.innerText = 'Global Operations';
+                icon.setAttribute('data-lucide', 'globe');
+            }
+            lucide.createIcons({ nameAttr: 'data-lucide', attrs: { class: icon.className } });
         }
 
         function triggerSlideUp(elementId) {
@@ -414,6 +513,7 @@
             el.classList.add('slide-up');
         }
 
+        // --- Knowledge Data Fetching ---
         let knowledgeData = {
             words: [{ word: "Sonder", partOfSpeech: "noun", definition: "The realization that each random passerby has a life as vivid and complex as your own." }],
             quotes: [{ text: "We suffer more often in imagination than in reality.", author: "Seneca" }],
@@ -576,21 +676,221 @@
         }
 
         function updateDailyGrind() {
-            const now = new Date(); const start = new Date(now).setHours(7,0,0,0); const end = new Date(now).setHours(20,0,0,0);
-            const totalDots = 52; const pct = Math.max(0, Math.min(1, (now - start) / (end - start)));
+            const now = new Date(); 
+            const start = new Date(now).setHours(9,0,0,0); // Shifted to 09:00
+            const end = new Date(now).setHours(20,0,0,0);
+            const totalDots = 44; // 11 hours * 4
+            const pct = Math.max(0, Math.min(1, (now - start) / (end - start)));
             const dotsPassed = now > end ? totalDots : (now < start ? 0 : Math.floor(pct * totalDots));
             const statusEl = document.getElementById('work-status');
             if (statusEl) { statusEl.innerText = now > end ? "DONE" : (now < start ? "PRE-WORK" : "WORKING"); statusEl.className = `text-[10px] uppercase font-bold ${now > end ? 'text-green-400' : 'text-[#4ea0c2]'}`; }
             document.getElementById('work-percentage').innerText = (pct * 100).toFixed(1) + "%";
+            
             const container = document.getElementById('grind-grid-container');
             let html = '';
-            for(let i=0; i<totalDots; i++) html += `<div class="grind-dot ${i < dotsPassed ? 'past' : (i === dotsPassed ? 'active' : 'bg-[#2d3748]')}"></div>`;
+            // Since CSS is scaling Y-axis -1, dots are laid out automatically L-R, B-T.
+            for(let i=0; i<totalDots; i++) {
+                html += `<div class="grind-dot ${i < dotsPassed ? 'past' : (i === dotsPassed ? 'active' : '')}"></div>`;
+            }
             if (container) container.innerHTML = html;
         }
 
+        // --- Schedule Tracker Logic ---
+        const schedulesData = {
+            monThu: [
+                { s: '00:00', e: '05:00', t: 'Sleep & Recovery' },
+                { s: '05:00', e: '05:30', t: 'Wake up, hydration, quick snack, gear up' },
+                { s: '05:30', e: '07:00', t: 'Solo Run (Easy Pace)' },
+                { s: '07:00', e: '07:30', t: 'Partner Run' },
+                { s: '07:30', e: '08:00', t: 'Breakfast (Oatmeal)' },
+                { s: '08:00', e: '08:30', t: 'Shower & Prep' },
+                { s: '08:30', e: '09:00', t: 'Buffer & Notion Calendar Review' },
+                { s: '09:00', e: '13:30', t: 'Work Block 1 (4.5 hours)' },
+                { s: '13:30', e: '14:15', t: 'Lunch (Burger prep, eat, clean)' },
+                { s: '14:15', e: '19:45', t: 'Work Block 2 (5.5 hours)' },
+                { s: '19:45', e: '20:00', t: 'Clean and tidy up workspace/home' },
+                { s: '20:00', e: '20:45', t: 'Evening Unwind & Dinner' },
+                { s: '20:45', e: '20:55', t: 'Wind-down (Notion + Calendar Review)' },
+                { s: '20:55', e: '21:10', t: 'Light reading' },
+                { s: '21:10', e: '24:00', t: 'Lights out' }
+            ],
+            tueFri: [
+                { s: '00:00', e: '05:00', t: 'Sleep & Recovery' },
+                { s: '05:00', e: '05:30', t: 'Wake up, hydration, quick snack, gear up' },
+                { s: '05:30', e: '07:00', t: 'Solo Run (Easy Pace)' },
+                { s: '07:00', e: '07:30', t: 'Partner Run' },
+                { s: '07:30', e: '08:00', t: 'Breakfast (Oatmeal)' },
+                { s: '08:00', e: '08:30', t: 'Shower & Prep' },
+                { s: '08:30', e: '09:00', t: 'Buffer & Notion Calendar Review' },
+                { s: '09:00', e: '13:30', t: 'Work Block 1 (4.5 hours)' },
+                { s: '13:30', e: '14:15', t: 'Lunch (Burger prep, eat, clean)' },
+                { s: '14:15', e: '16:00', t: 'Work Block 2 (1.75 hours)' },
+                { s: '16:00', e: '16:45', t: 'Strength Training (45 mins)' },
+                { s: '16:45', e: '19:30', t: 'Work Block 3 (2.75 hours)' },
+                { s: '19:30', e: '19:45', t: 'Clean and tidy up' },
+                { s: '19:45', e: '20:45', t: 'Evening Unwind & Dinner' },
+                { s: '20:45', e: '20:55', t: 'Wind-down (Notion + Calendar review)' },
+                { s: '20:55', e: '21:10', t: 'Light reading' },
+                { s: '21:10', e: '24:00', t: 'Lights out' }
+            ],
+            wed: [
+                { s: '00:00', e: '06:15', t: 'Sleep & Recovery' },
+                { s: '06:15', e: '06:30', t: 'Wake up' },
+                { s: '06:30', e: '07:30', t: 'Breakfast, buffer (No running)' },
+                { s: '07:30', e: '08:30', t: 'Drive & drop off wife at work' },
+                { s: '08:30', e: '10:30', t: 'Drive, grocery shopping, return home' },
+                { s: '10:30', e: '11:00', t: 'Unpack and organize groceries' },
+                { s: '11:00', e: '13:30', t: 'Work Block 1 (2.5 hours)' },
+                { s: '13:30', e: '14:15', t: 'Lunch (Burger prep, eat, clean)' },
+                { s: '14:15', e: '14:30', t: 'Work Block 2 (15 mins)' },
+                { s: '14:30', e: '16:15', t: 'Drive, pick up wife, return home' },
+                { s: '16:15', e: '17:00', t: 'Strength Training (45 mins)' },
+                { s: '17:00', e: '19:30', t: 'Work Block 3 (2.5 hours)' },
+                { s: '19:30', e: '19:45', t: 'Clean and tidy up' },
+                { s: '19:45', e: '20:45', t: 'Evening Unwind & Dinner' },
+                { s: '20:45', e: '20:55', t: 'Wind-down' },
+                { s: '20:55', e: '21:10', t: 'Light reading' },
+                { s: '21:10', e: '24:00', t: 'Lights out' }
+            ]
+        };
+
+        const daysOfWeekList = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+        const monthNamesList = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
+
+        function timeToMins(timeStr) {
+            const [hours, mins] = timeStr.split(':').map(Number);
+            return hours * 60 + mins;
+        }
+
+        function format24h(timeStr) {
+            let [h, m] = timeStr.split(':').map(Number);
+            if (h === 24) return "00:00"; 
+            return `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}`;
+        }
+
+        const compileSchedule = (arr) => arr.map(item => ({
+            ...item,
+            startMins: timeToMins(item.s),
+            endMins: timeToMins(item.e),
+            timeStr: `${format24h(item.s)} – ${item.e === '24:00' ? 'Sleep' : format24h(item.e)}`
+        }));
+
+        const compiledSched = {
+            1: compileSchedule(schedulesData.monThu),
+            2: compileSchedule(schedulesData.tueFri),
+            3: compileSchedule(schedulesData.wed),
+            4: compileSchedule(schedulesData.monThu),
+            5: compileSchedule(schedulesData.tueFri)
+        };
+
+        function updateScheduleTracker() {
+            const dayDisplay = document.getElementById('st-day-display');
+            if(!dayDisplay) return; // Prevent errors if DOM isn't loaded
+
+            const now = new Date();
+            const day = now.getDay(); 
+            const currentMins = now.getHours() * 60 + now.getMinutes();
+            const currentSecs = currentMins * 60 + now.getSeconds();
+
+            dayDisplay.innerText = daysOfWeekList[day];
+            document.getElementById('st-date-display').innerText = `${monthNamesList[now.getMonth()]} ${now.getDate()}`;
+            document.getElementById('st-clock-display').innerText = now.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', hour12: false });
+
+            const weekdayView = document.getElementById('st-weekday-view');
+            const weekendView = document.getElementById('st-weekend-view');
+
+            if (day === 0 || day === 6) {
+                weekdayView.classList.add('hidden');
+                weekdayView.classList.remove('flex');
+                weekendView.classList.remove('hidden');
+                weekendView.classList.add('flex');
+                return;
+            } else {
+                weekdayView.classList.remove('hidden');
+                weekdayView.classList.add('flex');
+                weekendView.classList.add('hidden');
+                weekendView.classList.remove('flex');
+            }
+
+            const activeSchedule = compiledSched[day];
+            let currentItem = null;
+            let nextItem = null;
+
+            for (let i = 0; i < activeSchedule.length; i++) {
+                if (currentMins >= activeSchedule[i].startMins && currentMins < activeSchedule[i].endMins) {
+                    currentItem = activeSchedule[i];
+                    if (i + 1 < activeSchedule.length) {
+                        nextItem = activeSchedule[i + 1];
+                    } else {
+                        const nextDay = (day + 1) % 7;
+                        if (nextDay === 6) {
+                            nextItem = { timeStr: 'Saturday', t: 'Weekend Mode Activated' };
+                        } else {
+                            nextItem = compiledSched[nextDay][1]; 
+                        }
+                    }
+                    break;
+                }
+            }
+
+            if (currentItem) {
+                document.getElementById('st-current-time-range').innerText = currentItem.timeStr;
+                document.getElementById('st-current-title').innerText = currentItem.t;
+
+                const totalSecs = (currentItem.endMins - currentItem.startMins) * 60;
+                const elapsedSecs = currentSecs - (currentItem.startMins * 60);
+                let percentage = (elapsedSecs / totalSecs) * 100;
+                percentage = Math.max(0, Math.min(100, percentage));
+                
+                document.getElementById('st-progress-bar').style.width = `${percentage}%`;
+                document.getElementById('st-progress-text').innerText = `${Math.floor(percentage)}%`;
+
+                if (nextItem) {
+                    document.getElementById('st-next-time-range').innerText = nextItem.timeStr;
+                    document.getElementById('st-next-title').innerText = nextItem.t;
+                }
+            }
+        }
+
+
+        // --- Weather (Chart Plugin + 90046 Zip Code) ---
         let weatherChartInst = null;
-        
-        // Full weather codes mapping
+        let weatherSunriseHr = 6.5; 
+        let weatherSunsetHr = 18.5;
+
+        const daylightPlugin = {
+            id: 'daylight',
+            beforeDraw: (chart) => {
+                const { ctx, chartArea: { top, bottom, left, right } } = chart;
+                const sr = chart.config.options.plugins.daylight?.sunrise;
+                const ss = chart.config.options.plugins.daylight?.sunset;
+                
+                if (sr !== undefined && ss !== undefined && (right - left) > 0) {
+                    ctx.save();
+                    ctx.fillStyle = 'rgba(255, 255, 255, 0.05)';
+                    
+                    const meta = chart.getDatasetMeta(0);
+                    if (meta.data && meta.data.length > 1) {
+                        const firstX = meta.data[0].x;
+                        const lastX = meta.data[meta.data.length - 1].x;
+                        const widthPerHr = (lastX - firstX) / (meta.data.length - 1);
+                        
+                        const startX = firstX + (sr * widthPerHr);
+                        const endX = firstX + (ss * widthPerHr);
+                        
+                        if (startX < endX) {
+                            ctx.fillRect(startX, top, endX - startX, bottom - top);
+                        } else {
+                            ctx.fillRect(firstX, top, startX - firstX, bottom - top);
+                            ctx.fillRect(endX, top, lastX - endX, bottom - top);
+                        }
+                    }
+                    ctx.restore();
+                }
+            }
+        };
+        Chart.register(daylightPlugin);
+
         const weatherCodes = {
             0: {d:'Clear', i:'sun'}, 1: {d:'Mainly Clear', i:'sun'}, 2: {d:'Partly Cloudy', i:'cloud-sun'}, 
             3: {d:'Overcast', i:'cloud'}, 45: {d:'Fog', i:'cloud-fog'}, 48: {d:'Fog', i:'cloud-fog'}, 
@@ -619,8 +919,18 @@
                 document.getElementById('uv-index').innerText = data.daily.uv_index_max[0];
                 document.getElementById('aqi').innerText = airData.current.us_aqi;
                 document.getElementById('visibility').innerText = "10+ mi"; 
-                document.getElementById('sunrise').innerText = new Date(data.daily.sunrise[0]).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit', hour12: false});
-                document.getElementById('sunset').innerText = new Date(data.daily.sunset[0]).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit', hour12: false});
+                
+                const sunriseDate = new Date(data.daily.sunrise[0]);
+                const sunsetDate = new Date(data.daily.sunset[0]);
+                
+                weatherSunriseHr = sunriseDate.getHours() + (sunriseDate.getMinutes() / 60);
+                weatherSunsetHr = sunsetDate.getHours() + (sunsetDate.getMinutes() / 60);
+
+                const sunriseStr = sunriseDate.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit', hour12: false});
+                const sunsetStr = sunsetDate.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit', hour12: false});
+                
+                document.getElementById('sunrise').innerText = sunriseStr;
+                document.getElementById('sunset').innerText = sunsetStr;
                 
                 updateChart(data.hourly);
                 updateForecastList(data.daily);
@@ -631,13 +941,17 @@
             const ctx = document.getElementById('weatherChart'); if (!ctx) return;
             const now = new Date(); const todayStr = now.toISOString().split('T')[0];
             let labels = [], temps = [], curIdx = -1;
+            
             for(let i=0; i<hourly.time.length; i++) {
                 if(hourly.time[i].startsWith(todayStr)) {
                     const t = new Date(hourly.time[i]); 
                     labels.push(t.toLocaleTimeString('en-US', {hour12: false, hour: '2-digit'}) + ":00");
-                    temps.push(hourly.temperature_2m[i]); if (t.getHours() === now.getHours()) curIdx = labels.length - 1;
+                    temps.push(hourly.temperature_2m[i]); 
+                    if (t.getHours() === now.getHours()) curIdx = labels.length - 1;
                 }
             }
+            if (curIdx === -1) curIdx = 0;
+
             if (weatherChartInst) weatherChartInst.destroy();
             const grad = ctx.getContext('2d').createLinearGradient(0, 0, 0, 100); 
             grad.addColorStop(0, 'rgba(250, 204, 21, 0.4)'); 
@@ -648,6 +962,7 @@
                 data: { 
                     labels: labels, 
                     datasets: [{ 
+                        label: 'Temperature',
                         data: temps, 
                         backgroundColor: grad, 
                         borderWidth: 3, 
@@ -664,9 +979,14 @@
                 options: { 
                     responsive: true, 
                     maintainAspectRatio: false, 
-                    interaction: { mode: 'index', intersect: false },
+                    interaction: { mode: 'index', intersect: false }, 
                     plugins: { 
                         legend: { display: false },
+                        daylight: {
+                            sunrise: weatherSunriseHr,
+                            sunset: weatherSunsetHr,
+                            startHour: 0
+                        },
                         tooltip: { 
                             enabled: true,
                             mode: 'index',
@@ -674,7 +994,7 @@
                             backgroundColor: 'rgba(25, 25, 25, 0.95)',
                             titleFont: { size: 14, family: 'Inter', weight: 'normal' },
                             titleColor: '#9ca3af',
-                            bodyFont: { size: 32, weight: 'bold', family: 'Inter' },
+                            bodyFont: { size: 32, weight: 'bold', family: 'Inter' }, 
                             padding: 16,
                             displayColors: false,
                             borderColor: '#2e2e2e',
@@ -683,7 +1003,7 @@
                                 title: function(context) { return context[0].label; },
                                 label: function(context) { return context.parsed.y + '°'; }
                             }
-                        }
+                        } 
                     }, 
                     scales: { 
                         x: { display: true, ticks: { color: '#6b7280', maxTicksLimit: 6, font: {size: 10} }, grid: { display: false } }, 
@@ -705,6 +1025,7 @@
             lucide.createIcons();
         }
 
+        // --- Market Sparklines ---
         const MOCK_STOCKS = [ { sym: "VOO", base: 472 }, { sym: "TSM", base: 141 }, { sym: "NVDA", base: 885 }, { sym: "SWPPX", base: 79 }, { sym: "SCHD", base: 78 }, { sym: "SFSNX", base: 15 } ];
         function initMarket() {
             const container = document.getElementById('stocks-container'); if(!container) return;
@@ -723,18 +1044,61 @@
             });
         }
 
-        function tick() {
+        // --- Optimized Tick Loops ---
+        function tickAge() {
             const now = new Date();
-            document.getElementById('decimal-age').innerText = ((now - BIRTH_DATE) / (1000 * 60 * 60 * 24 * 365.25)).toFixed(8);
-            const laTime = new Date(now.toLocaleString("en-US", { timeZone: 'America/Los_Angeles' }));
-            document.getElementById('master-clock').innerText = laTime.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-            document.getElementById('master-date').innerText = laTime.toLocaleDateString("en-US", { weekday: 'long', month: 'long', day: 'numeric' });
-            drawSquareChronograph('analogClock', laTime);
-            LOCATIONS.forEach(loc => { const el = document.getElementById(`digital-${loc.id}`); if(el) el.innerText = new Date(now.toLocaleString("en-US", { timeZone: loc.zone })).toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' }); });
+            const ageYear = (now - BIRTH_DATE) / (1000 * 60 * 60 * 24 * 365.25);
+            const decimalAgeEl = document.getElementById('decimal-age');
+            if (decimalAgeEl) decimalAgeEl.innerText = ageYear.toFixed(8);
         }
 
-        initCalendar(); initLifeGrid(); initWorldClocks(); initMarket(); loadKnowledge(); tick(); fetchWeather(); updateDailyGrind();
-        setInterval(tick, 50); setInterval(updateDailyGrind, 60000); setInterval(rotateKnowledge, 120000); setInterval(fetchWeather, 600000); setInterval(initMarket, 300000);
+        function tickClocks() {
+            const now = new Date();
+            
+            const laTimeStr = now.toLocaleString("en-US", { timeZone: 'America/Los_Angeles' });
+            const laDateStr = now.toLocaleDateString("en-US", { timeZone: 'America/Los_Angeles', weekday: 'long', month: 'long', day: 'numeric' });
+            const laTime = new Date(laTimeStr);
+            
+            const masterClockEl = document.getElementById('master-clock');
+            if (masterClockEl) masterClockEl.innerText = laTime.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+            
+            const masterDateEl = document.getElementById('master-date');
+            if (masterDateEl) masterDateEl.innerText = laDateStr;
+
+            drawSquareChronograph('analogClock', laTime);
+
+            LOCATIONS.forEach(loc => {
+                const cityTimeStr = now.toLocaleString("en-US", { timeZone: loc.zone });
+                const cityTime = new Date(cityTimeStr);
+                const el = document.getElementById(`digital-${loc.id}`);
+                if(el) el.innerText = cityTime.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
+            });
+
+            // Update nested schedule tracker too
+            updateScheduleTracker();
+        }
+
+        function tickGrind() { updateDailyGrind(); }
+
+        // Init
+        initCalendar();
+        initLifeGrid();
+        initWorldClocks();
+        initMarket();
+        loadKnowledge(); 
+        
+        tickAge();
+        tickClocks();
+        tickGrind();
+        fetchWeather();
+        
+        setInterval(tickAge, 50);                   
+        setInterval(tickClocks, 1000);              
+        setInterval(tickGrind, 60000);              
+        setInterval(rotateKnowledge, 60000 * 2);    
+        setInterval(fetchWeather, 60000 * 10);      
+        setInterval(initMarket, 60000 * 5); 
+
     </script>
 </body>
 </html>
