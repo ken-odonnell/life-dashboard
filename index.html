@@ -135,6 +135,9 @@
         <button class="nav-btn text-[9px] uppercase tracking-widest text-gray-400 hover:text-white transition-colors flex items-center gap-1.5" onclick="switchTab('fitness', this)">
             <i data-lucide="activity" class="w-3 h-3"></i> Fitness
         </button>
+        <button class="nav-btn text-[9px] uppercase tracking-widest text-gray-400 hover:text-white transition-colors flex items-center gap-1.5" onclick="switchTab('structure', this)">
+            <i data-lucide="folder-tree" class="w-3 h-3"></i> Structure
+        </button>
         <button class="nav-btn text-[9px] uppercase tracking-widest text-gray-400 hover:text-white transition-colors flex items-center gap-1.5" onclick="switchTab('hotkeys', this)">
             <i data-lucide="keyboard" class="w-3 h-3"></i> Hotkeys
         </button>
@@ -144,7 +147,7 @@
     </div>
 
     <!-- ==================== TAB 1: MAIN DASHBOARD ==================== -->
-    <div id="tab-main" class="tab-content max-w-7xl w-full grid grid-cols-1 lg:grid-cols-12 dashboard-container">
+    <div id="tab-main" class="tab-content active max-w-7xl w-full grid grid-cols-1 lg:grid-cols-12 dashboard-container">
 
         <!-- 1. Daily Knowledge -->
         <div class="card p-5 lg:col-span-12 flex flex-col justify-center">
@@ -392,6 +395,7 @@
             </div>
             <div id="stocks-container" class="grid grid-cols-2 gap-[1px] bg-[#2e2e2e] flex-1 overflow-hidden"></div>
         </div>
+
     </div>
 
     <!-- ==================== TAB 2: FITNESS ==================== -->
@@ -434,7 +438,15 @@
         </div>
     </div>
 
-    <!-- ==================== TAB 3: HOTKEYS ==================== -->
+    <!-- ==================== TAB 3: STRUCTURE ==================== -->
+    <div id="tab-structure" class="tab-content hidden max-w-7xl w-full grid grid-cols-1 dashboard-container">
+        <!-- Border-0 and P-0 to make the GUI fully flush with edges -->
+        <div class="card p-0 flex flex-col h-[92vh] w-full border-0">
+            <iframe src="https://ken-odonnell.github.io/folder-structure/" class="w-full h-full border-0 bg-[#0f0f0f]"></iframe>
+        </div>
+    </div>
+
+    <!-- ==================== TAB 4: HOTKEYS ==================== -->
     <div id="tab-hotkeys" class="tab-content hidden max-w-7xl w-full grid grid-cols-1 dashboard-container">
         <!-- Border-0 and P-0 to make the GUI fully flush with edges -->
         <div class="card p-0 flex flex-col h-[92vh] w-full border-0">
@@ -442,7 +454,7 @@
         </div>
     </div>
 
-    <!-- ==================== TAB 4: MUSIC ==================== -->
+    <!-- ==================== TAB 5: MUSIC ==================== -->
     <div id="tab-music" class="tab-content hidden max-w-7xl w-full grid grid-cols-1 dashboard-container">
         <!-- Border-0 and P-0 to make the GUI fully flush with edges -->
         <div class="card p-0 flex flex-col h-[92vh] w-full border-0">
